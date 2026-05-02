@@ -1035,7 +1035,7 @@ async function doLogin() {
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
   btn.textContent = 'دخول';
   if (error) return setAuthMsg(error.message);
-  await initApp(data.user);
+  // onAuthStateChange سيتولى الأمر تلقائياً
 }
 
 async function doRegister() {
@@ -1364,8 +1364,29 @@ function showToast(msg, type = '') {
 // BOOT
 // =====================================================
 (async () => {
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) await initApp(session.user);
+  try {
+    const { data: { session }, error } = await sb.auth.getSession();
+    if (error) {
+      console.error('Session error:', error);
+      return;
+    }
+    if (session && session.user) {
+      await initApp(session.user);
+    }
+    // استمع لتغييرات الـ auth
+    sb.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        await initApp(session.user);
+      } else if (event === 'SIGNED_OUT') {
+        document.getElementById('auth-screen').style.display = '';
+        document.getElementById('app-screen').style.display = 'none';
+        document.getElementById('teacher-view').style.display = 'none';
+        document.getElementById('admin-view').style.display = 'none';
+      }
+    });
+  } catch(e) {
+    console.error('Boot error:', e);
+  }
 })();
 </script>
 </body>
