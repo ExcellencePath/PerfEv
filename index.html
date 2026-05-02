@@ -168,7 +168,15 @@
       color: var(--red);
     }
 
-    .auth-msg.success { color: var(--green); }
+    .auth-msg.success {
+      color: var(--green);
+      background: #f0fff6;
+      border: 1.5px solid #b7f0d0;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
 
     /* ===== TOP NAV ===== */
     #app-screen { display: none; min-height: 100vh; }
@@ -1040,7 +1048,7 @@ async function doRegister() {
     await sb.from('profiles').upsert({
       id: data.user.id, full_name: name, email, role
     });
-    setAuthMsg('تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن.', true);
+    setAuthMsg('✅ تم إنشاء حسابك! تم إرسال رابط تأكيد إلى بريدك الإلكتروني — تحقق من بريدك واضغط الرابط أولاً ثم سجّل دخولك.', true);
     switchTab('login');
   }
 }
