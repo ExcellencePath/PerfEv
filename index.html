@@ -1010,9 +1010,19 @@ function switchTab(tab) {
   setAuthMsg('');
 }
 
+function translateError(msg) {
+  if (msg.includes('email rate limit')) return '⚠️ تم تجاوز الحد المسموح لإرسال الإيميلات، انتظر ساعة وحاول مجدداً أو استخدم بريداً مختلفاً.';
+  if (msg.includes('Invalid login')) return 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+  if (msg.includes('already registered')) return 'هذا البريد الإلكتروني مسجل مسبقاً.';
+  if (msg.includes('Password should')) return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل.';
+  if (msg.includes('Unable to validate')) return 'البريد الإلكتروني غير صحيح.';
+  if (msg.includes('Email not confirmed')) return 'يرجى تأكيد بريدك الإلكتروني أولاً قبل تسجيل الدخول.';
+  return msg;
+}
+
 function setAuthMsg(msg, success = false) {
   const el = document.getElementById('auth-msg');
-  el.textContent = msg;
+  el.textContent = success ? msg : translateError(msg);
   el.className = 'auth-msg' + (success ? ' success' : '');
 }
 
@@ -1063,20 +1073,35 @@ async function doLogout() {
 // =====================================================
 async function initApp(user) {
   currentUser = user;
-  // Load profile
-  const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single();
-  if (!profile) {
-    // Create profile from user metadata
+
+  try {
+    // محاولة جلب الـ profile بدون .single() لتجنب خطأ 406
+    const { data: profiles } = await sb.from('profiles').select('*').eq('id', user.id);
+    const profile = profiles && profiles.length > 0 ? profiles[0] : null;
+
+    if (!profile) {
+      const meta = user.user_metadata || {};
+      const newProfile = {
+        id: user.id,
+        full_name: meta.full_name || user.email,
+        email: user.email,
+        role: meta.role || 'teacher'
+      };
+      await sb.from('profiles').upsert(newProfile);
+      currentProfile = newProfile;
+    } else {
+      currentProfile = profile;
+    }
+  } catch(e) {
+    console.error('initApp error:', e);
+    // fallback
     const meta = user.user_metadata || {};
-    await sb.from('profiles').insert({
+    currentProfile = {
       id: user.id,
       full_name: meta.full_name || user.email,
       email: user.email,
       role: meta.role || 'teacher'
-    });
-    currentProfile = { id: user.id, full_name: meta.full_name || user.email, email: user.email, role: meta.role || 'teacher' };
-  } else {
-    currentProfile = profile;
+    };
   }
 
   document.getElementById('auth-screen').style.display = 'none';
