@@ -1,1393 +1,455 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>منصة شواهد الأداء</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    :root {
-      --ink: #0d1117;
-      --paper: #f5f0e8;
-      --cream: #ede8da;
-      --gold: #c9933a;
-      --gold-light: #e8b85a;
-      --teal: #1a6b5c;
-      --teal-light: #2a8a76;
-      --red: #c0392b;
-      --green: #1e7e48;
-      --shadow: rgba(13,17,23,0.12);
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-      min-height: 100vh;
-      background-image:
-        radial-gradient(ellipse at 20% 20%, rgba(201,147,58,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 80%, rgba(26,107,92,0.08) 0%, transparent 60%);
-    }
-
-    /* ===== AUTH SCREEN ===== */
-    #auth-screen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    .auth-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 3rem 2.5rem;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 20px 60px var(--shadow), 0 0 0 1px rgba(201,147,58,0.15);
-    }
-
-    .auth-logo {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .auth-logo .icon {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, var(--teal), var(--gold));
-      border-radius: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 8px 24px rgba(26,107,92,0.25);
-    }
-
-    .auth-logo h1 {
-      font-family: 'Tajawal', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: var(--ink);
-      line-height: 1.3;
-    }
-
-    .auth-logo p {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 0.3rem;
-    }
-
-    .tab-switch {
-      display: flex;
-      background: var(--cream);
-      border-radius: 10px;
-      padding: 4px;
-      margin-bottom: 1.8rem;
-    }
-
-    .tab-switch button {
-      flex: 1;
-      padding: 0.6rem;
-      border: none;
-      background: transparent;
-      border-radius: 8px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      color: #888;
-      transition: all 0.2s;
-    }
-
-    .tab-switch button.active {
-      background: #fff;
-      color: var(--teal);
-      box-shadow: 0 2px 8px var(--shadow);
-    }
-
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #444;
-      margin-bottom: 0.4rem;
-    }
-
-    .form-group input, .form-group select {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1.5px solid #e0ddd6;
-      border-radius: 10px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.95rem;
-      background: #fafaf8;
-      color: var(--ink);
-      transition: border-color 0.2s;
-      outline: none;
-    }
-
-    .form-group input:focus, .form-group select:focus {
-      border-color: var(--teal);
-      background: #fff;
-    }
-
-    .btn-primary {
-      width: 100%;
-      padding: 0.85rem;
-      background: linear-gradient(135deg, var(--teal), var(--teal-light));
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 16px rgba(26,107,92,0.3);
-      margin-top: 0.5rem;
-    }
-
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,107,92,0.4); }
-    .btn-primary:active { transform: translateY(0); }
-
-    .auth-msg {
-      text-align: center;
-      font-size: 0.85rem;
-      margin-top: 1rem;
-      min-height: 1.2rem;
-      color: var(--red);
-    }
-
-    .auth-msg.success {
-      color: var(--green);
-      background: #f0fff6;
-      border: 1.5px solid #b7f0d0;
-      border-radius: 10px;
-      padding: 0.75rem 1rem;
-      font-size: 0.88rem;
-      line-height: 1.5;
-    }
-
-    /* ===== TOP NAV ===== */
-    #app-screen { display: none; min-height: 100vh; }
-
-    .topnav {
-      background: var(--ink);
-      padding: 0 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 60px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .topnav-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      color: #fff;
-    }
-
-    .topnav-brand .dot {
-      width: 10px; height: 10px;
-      background: var(--gold);
-      border-radius: 50%;
-    }
-
-    .topnav-brand span {
-      font-family: 'Tajawal', sans-serif;
-      font-weight: 900;
-      font-size: 1.1rem;
-      letter-spacing: 0.02em;
-    }
-
-    .topnav-right {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .user-badge {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      padding: 0.35rem 0.9rem;
-      border-radius: 20px;
-      font-size: 0.82rem;
-      font-weight: 600;
-    }
-
-    .role-badge {
-      background: var(--gold);
-      color: var(--ink);
-      padding: 0.2rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    .btn-logout {
-      background: rgba(255,255,255,0.08);
-      color: #aaa;
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 0.35rem 0.8rem;
-      border-radius: 8px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.82rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-logout:hover { background: rgba(255,255,255,0.15); color: #fff; }
-
-    /* ===== TEACHER VIEW ===== */
-    #teacher-view, #admin-view { display: none; padding: 2rem; max-width: 900px; margin: 0 auto; }
-    #teacher-view.visible, #admin-view.visible { display: block !important; }
-
-    .page-header {
-      margin-bottom: 2rem;
-    }
-
-    .page-header h2 {
-      font-family: 'Tajawal', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: var(--ink);
-    }
-
-    .page-header p {
-      color: #666;
-      font-size: 0.9rem;
-      margin-top: 0.3rem;
-    }
-
-    .progress-bar-wrap {
-      background: var(--cream);
-      border-radius: 30px;
-      height: 8px;
-      margin-top: 1rem;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--teal), var(--gold));
-      border-radius: 30px;
-      transition: width 0.5s ease;
-    }
-
-    .progress-label {
-      font-size: 0.8rem;
-      color: #888;
-      margin-top: 0.4rem;
-    }
-
-    /* ===== EVIDENCE CARDS ===== */
-    .evidence-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .evidence-card {
-      background: #fff;
-      border-radius: 14px;
-      padding: 1.2rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      border: 2px solid transparent;
-      box-shadow: 0 2px 12px var(--shadow);
-      transition: all 0.25s;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .evidence-card:hover {
-      box-shadow: 0 6px 24px var(--shadow);
-      transform: translateY(-1px);
-    }
-
-    .evidence-card.completed {
-      border-color: var(--green);
-      background: linear-gradient(135deg, #fff, #f0fff6);
-    }
-
-    .evidence-card.completed::before {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--green);
-    }
-
-    .card-num {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background: var(--cream);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Tajawal', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 900;
-      color: #888;
-      flex-shrink: 0;
-      transition: all 0.2s;
-    }
-
-    .evidence-card.completed .card-num {
-      background: var(--green);
-      color: #fff;
-    }
-
-    .card-info { flex: 1; }
-
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .card-subtitle {
-      font-size: 0.78rem;
-      color: #888;
-      margin-top: 0.2rem;
-    }
-
-    .card-status {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-
-    .status-done { color: var(--green); }
-    .status-pending { color: #bbb; }
-
-    .check-icon {
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem;
-    }
-
-    .check-icon.done { background: var(--green); color: #fff; }
-    .check-icon.pending { background: #e8e5de; color: #bbb; }
-
-    /* ===== UPLOAD MODAL ===== */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      backdrop-filter: blur(4px);
-    }
-
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: #fff;
-      border-radius: 20px;
-      padding: 2rem;
-      width: 100%;
-      max-width: 500px;
-      max-height: 85vh;
-      overflow-y: auto;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
-      animation: slideUp 0.25s ease;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
-
-    .modal-header h3 {
-      font-family: 'Tajawal', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 900;
-    }
-
-    .btn-close {
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      border: none;
-      background: var(--cream);
-      font-size: 1.1rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .upload-zone {
-      border: 2px dashed #d0ccc4;
-      border-radius: 12px;
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: var(--paper);
-      margin-bottom: 1.2rem;
-    }
-
-    .upload-zone:hover, .upload-zone.drag { border-color: var(--teal); background: #f0fff8; }
-
-    .upload-zone .upload-icon { font-size: 2.5rem; margin-bottom: 0.7rem; }
-    .upload-zone p { font-size: 0.88rem; color: #666; }
-    .upload-zone strong { color: var(--teal); }
-
-    .upload-zone input[type="file"] { display: none; }
-
-    .preview-wrap {
-      display: none;
-      margin-bottom: 1.2rem;
-      text-align: center;
-    }
-
-    .preview-wrap img {
-      max-width: 100%;
-      max-height: 200px;
-      border-radius: 10px;
-      object-fit: contain;
-      border: 2px solid var(--cream);
-    }
-
-    .preview-wrap .file-info {
-      font-size: 0.82rem;
-      color: #888;
-      margin-top: 0.5rem;
-    }
-
-    .preview-wrap.show { display: block; }
-
-    .modal-actions {
-      display: flex;
-      gap: 0.8rem;
-    }
-
-    .btn-cancel {
-      flex: 1;
-      padding: 0.75rem;
-      border: 1.5px solid #e0ddd6;
-      border-radius: 10px;
-      background: transparent;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      color: #666;
-      transition: all 0.2s;
-    }
-
-    .btn-cancel:hover { background: var(--cream); }
-
-    .btn-upload {
-      flex: 2;
-      padding: 0.75rem;
-      background: linear-gradient(135deg, var(--teal), var(--teal-light));
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 14px rgba(26,107,92,0.25);
-    }
-
-    .btn-upload:hover { transform: translateY(-1px); }
-    .btn-upload:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-    /* ===== ADMIN VIEW ===== */
-    #admin-view { max-width: 1100px; }
-
-    .admin-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .stat-card {
-      background: #fff;
-      border-radius: 14px;
-      padding: 1.2rem 1.5rem;
-      box-shadow: 0 2px 12px var(--shadow);
-      border-right: 4px solid var(--gold);
-    }
-
-    .stat-card .num {
-      font-family: 'Tajawal', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: var(--teal);
-      line-height: 1;
-    }
-
-    .stat-card .lbl {
-      font-size: 0.82rem;
-      color: #888;
-      margin-top: 0.3rem;
-    }
-
-    .search-bar {
-      background: #fff;
-      border-radius: 12px;
-      padding: 0.75rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      box-shadow: 0 2px 10px var(--shadow);
-      margin-bottom: 1.5rem;
-      border: 1.5px solid transparent;
-      transition: border-color 0.2s;
-    }
-
-    .search-bar:focus-within { border-color: var(--teal); }
-
-    .search-bar input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.95rem;
-      outline: none;
-      color: var(--ink);
-    }
-
-    .search-bar .search-icon { color: #bbb; font-size: 1rem; }
-
-    .teacher-table {
-      background: #fff;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 16px var(--shadow);
-    }
-
-    .teacher-row {
-      padding: 1.2rem 1.5rem;
-      border-bottom: 1px solid var(--cream);
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .teacher-row:last-child { border-bottom: none; }
-    .teacher-row:hover { background: #fafaf8; }
-
-    .teacher-row-top {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .teacher-avatar {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--teal), var(--gold));
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Tajawal', sans-serif;
-      font-weight: 900;
-      color: #fff;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-
-    .teacher-meta { flex: 1; }
-    .teacher-name { font-weight: 700; font-size: 0.95rem; }
-    .teacher-email { font-size: 0.78rem; color: #888; margin-top: 0.1rem; }
-
-    .completion-pill {
-      background: var(--cream);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #888;
-    }
-
-    .completion-pill.full { background: #d4f5e3; color: var(--green); }
-
-    .dots-grid {
-      display: flex;
-      gap: 5px;
-      margin-top: 0.8rem;
-      flex-wrap: wrap;
-    }
-
-    .dot-item {
-      width: 28px; height: 28px;
-      border-radius: 6px;
-      background: var(--cream);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: #bbb;
-      position: relative;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .dot-item.filled {
-      background: var(--green);
-      color: #fff;
-    }
-
-    .dot-item:hover { transform: scale(1.15); z-index: 1; }
-
-    /* Detail panel */
-    .teacher-detail {
-      display: none;
-      margin-top: 1rem;
-      padding: 1.2rem;
-      background: var(--paper);
-      border-radius: 12px;
-      border: 1px solid var(--cream);
-    }
-
-    .teacher-detail.open { display: block; }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.8rem;
-    }
-
-    .detail-item {
-      background: #fff;
-      border-radius: 10px;
-      padding: 0.8rem;
-      border: 2px solid var(--cream);
-      transition: all 0.2s;
-    }
-
-    .detail-item.has-file {
-      border-color: var(--green);
-      cursor: pointer;
-    }
-
-    .detail-item.has-file:hover { box-shadow: 0 4px 14px rgba(30,126,72,0.15); }
-
-    .detail-item-header {
-      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
-    }
-
-    .detail-item-num {
-      width: 22px; height: 22px;
-      border-radius: 5px;
-      background: var(--cream);
-      font-size: 0.72rem;
-      font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      color: #888;
-    }
-
-    .detail-item.has-file .detail-item-num {
-      background: var(--green);
-      color: #fff;
-    }
-
-    .detail-item-name {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .detail-item-thumb {
-      width: 100%;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 6px;
-      background: var(--cream);
-    }
-
-    .detail-item-nofile {
-      height: 50px;
-      display: flex; align-items: center; justify-content: center;
-      color: #ccc;
-      font-size: 0.78rem;
-    }
-
-    /* Image Lightbox */
-    .lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      z-index: 300;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .lightbox.open { display: flex; }
-
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 80vh;
-      border-radius: 10px;
-      object-fit: contain;
-    }
-
-    .lightbox-caption {
-      color: #fff;
-      font-size: 0.9rem;
-      opacity: 0.7;
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 1.5rem;
-      left: 1.5rem;
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      width: 44px; height: 44px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    /* Loader */
-    .loader {
-      display: inline-block;
-      width: 18px; height: 18px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--ink);
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      border-radius: 30px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      z-index: 400;
-      transition: transform 0.3s ease;
-      pointer-events: none;
-    }
-
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    .toast.success { background: var(--green); }
-    .toast.error { background: var(--red); }
-
-    @media (max-width: 640px) {
-      .admin-stats { grid-template-columns: 1fr 1fr; }
-      .admin-stats .stat-card:last-child { grid-column: span 2; }
-      #admin-view, #teacher-view { padding: 1rem; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>منصة شواهد الأداء</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#0d1117;--paper:#f5f0e8;--cream:#ede8da;--gold:#c9933a;--teal:#1a6b5c;--teal2:#2a8a76;--red:#c0392b;--green:#1e7e48;--sh:rgba(13,17,23,0.12)}
+body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh}
+.page{display:none!important}
+.page.on{display:block!important}
+#page-auth.on{display:flex!important}
+/* AUTH */
+#page-auth{align-items:center;justify-content:center;padding:2rem;min-height:100vh}
+.auth-box{background:#fff;border-radius:20px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 20px 60px var(--sh)}
+.auth-logo{text-align:center;margin-bottom:2rem}
+.auth-icon{width:60px;height:60px;background:linear-gradient(135deg,var(--teal),var(--gold));border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:.8rem}
+.auth-logo h1{font-family:'Tajawal',sans-serif;font-size:1.5rem;font-weight:900}
+.auth-logo p{font-size:.82rem;color:#888;margin-top:.2rem}
+.tabs{display:flex;background:var(--cream);border-radius:10px;padding:4px;margin-bottom:1.5rem}
+.tabs button{flex:1;padding:.55rem;border:none;background:transparent;border-radius:7px;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;color:#888;transition:all .2s}
+.tabs button.on{background:#fff;color:var(--teal);box-shadow:0 2px 8px var(--sh)}
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:.82rem;font-weight:600;color:#555;margin-bottom:.35rem}
+.fg input,.fg select{width:100%;padding:.7rem 1rem;border:1.5px solid #e0ddd6;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.92rem;background:#fafaf8;color:var(--ink);outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus{border-color:var(--teal);background:#fff}
+.btn-m{width:100%;padding:.8rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.4rem;box-shadow:0 4px 14px rgba(26,107,92,.28);transition:all .2s}
+.btn-m:hover{transform:translateY(-1px)}
+.amsg{text-align:center;font-size:.82rem;margin-top:.8rem;min-height:1rem;padding:.5rem;border-radius:8px}
+.amsg.err{color:var(--red)}
+.amsg.ok{color:var(--green);background:#f0fff6;border:1px solid #b7f0d0}
+/* NAV */
+.nav{background:var(--ink);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;position:sticky;top:0;z-index:50}
+.nb{display:flex;align-items:center;gap:.6rem;color:#fff}
+.nd{width:9px;height:9px;background:var(--gold);border-radius:50%}
+.nb span{font-family:'Tajawal',sans-serif;font-weight:900;font-size:1rem}
+.nr{display:flex;align-items:center;gap:.8rem}
+.nn{background:rgba(255,255,255,.1);color:#fff;padding:.3rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600}
+.nrl{background:var(--gold);color:var(--ink);padding:.2rem .65rem;border-radius:20px;font-size:.72rem;font-weight:700}
+.bo{background:rgba(255,255,255,.08);color:#aaa;border:1px solid rgba(255,255,255,.1);padding:.3rem .7rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.78rem;cursor:pointer}
+.bo:hover{background:rgba(255,255,255,.15);color:#fff}
+/* TEACHER */
+.wrap{max-width:860px;margin:0 auto;padding:2rem 1.5rem}
+.ph h2{font-family:'Tajawal',sans-serif;font-size:1.7rem;font-weight:900}
+.ph p{color:#777;font-size:.88rem;margin-top:.2rem}
+.pb{background:var(--cream);border-radius:30px;height:8px;margin-top:.9rem;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:30px;transition:width .5s}
+.pl{font-size:.78rem;color:#999;margin-top:.35rem}
+.el{margin-top:1.5rem;display:flex;flex-direction:column;gap:.8rem}
+.ec{background:#fff;border-radius:13px;padding:1.1rem 1.3rem;display:flex;align-items:center;gap:1rem;border:2px solid transparent;box-shadow:0 2px 10px var(--sh);cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
+.ec:hover{box-shadow:0 5px 20px var(--sh);transform:translateY(-1px)}
+.ec.done{border-color:var(--green);background:linear-gradient(135deg,#fff,#f0fff6)}
+.ec.done::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;background:var(--green)}
+.en{width:40px;height:40px;border-radius:9px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:900;color:#999;flex-shrink:0}
+.ec.done .en{background:var(--green);color:#fff}
+.ei{flex:1}
+.et{font-size:.92rem;font-weight:700}
+.es{font-size:.75rem;color:#999;margin-top:.15rem}
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(3px)}
+.ov.open{display:flex!important}
+.mo{background:#fff;border-radius:18px;padding:1.8rem;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:up .22s ease}
+@keyframes up{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.3rem}
+.mh h3{font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:900}
+.bx{width:30px;height:30px;border-radius:7px;border:none;background:var(--cream);font-size:1rem;cursor:pointer}
+.dz{border:2px dashed #d0ccc4;border-radius:12px;padding:2rem 1.2rem;text-align:center;cursor:pointer;background:var(--paper);margin-bottom:1rem;transition:all .2s}
+.dz:hover,.dz.drag{border-color:var(--teal);background:#f0fff8}
+.dz input{display:none}
+.dzi{font-size:2.2rem;margin-bottom:.5rem}
+.dz p{font-size:.84rem;color:#777}
+.dz strong{color:var(--teal)}
+.pv{display:none;margin-bottom:1rem;text-align:center}
+.pv img{max-width:100%;max-height:180px;border-radius:9px;border:2px solid var(--cream)}
+.pv .fi{font-size:.78rem;color:#999;margin-top:.4rem}
+.pv.show{display:block}
+.mbs{display:flex;gap:.7rem}
+.bcl{flex:1;padding:.7rem;border:1.5px solid #e0ddd6;border-radius:9px;background:transparent;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;color:#777}
+.bup{flex:2;padding:.7rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:9px;font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer}
+.bup:disabled{opacity:.5;cursor:not-allowed}
+/* ADMIN */
+.ww{max-width:1080px;margin:0 auto;padding:2rem 1.5rem}
+.sts{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.st{background:#fff;border-radius:13px;padding:1.1rem 1.3rem;box-shadow:0 2px 10px var(--sh);border-right:4px solid var(--gold)}
+.st .n{font-family:'Tajawal',sans-serif;font-size:2rem;font-weight:900;color:var(--teal);line-height:1}
+.st .l{font-size:.8rem;color:#999;margin-top:.25rem}
+.sb{background:#fff;border-radius:11px;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;box-shadow:0 2px 8px var(--sh);margin-bottom:1.2rem}
+.sb input{flex:1;border:none;background:transparent;font-family:'Cairo',sans-serif;font-size:.92rem;outline:none}
+.tb{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 2px 14px var(--sh)}
+.tr{padding:1.1rem 1.3rem;border-bottom:1px solid var(--cream);cursor:pointer}
+.tr:last-child{border-bottom:none}
+.tr:hover{background:#fafaf8}
+.trt{display:flex;align-items:center;gap:.9rem}
+.av{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--teal),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Tajawal',sans-serif;font-weight:900;color:#fff;font-size:1rem;flex-shrink:0}
+.tm{flex:1}
+.tn{font-weight:700;font-size:.92rem}
+.te{font-size:.75rem;color:#999;margin-top:.1rem}
+.pi{background:var(--cream);padding:.25rem .7rem;border-radius:20px;font-size:.78rem;font-weight:700;color:#999}
+.pi.f{background:#d4f5e3;color:var(--green)}
+.dts{display:flex;gap:4px;margin-top:.7rem;flex-wrap:wrap}
+.dt{width:26px;height:26px;border-radius:6px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#bbb;cursor:pointer;transition:all .2s}
+.dt.on{background:var(--green);color:#fff}
+.dt:hover{transform:scale(1.15)}
+.dl{display:none;margin-top:.9rem;padding:1rem;background:var(--paper);border-radius:11px;border:1px solid var(--cream)}
+.dl.open{display:block}
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.7rem}
+.di{background:#fff;border-radius:9px;padding:.75rem;border:2px solid var(--cream)}
+.di.h{border-color:var(--green);cursor:pointer}
+.dih{display:flex;align-items:center;gap:.45rem;margin-bottom:.45rem}
+.din{width:20px;height:20px;border-radius:4px;background:var(--cream);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:#999}
+.di.h .din{background:var(--green);color:#fff}
+.dim{font-size:.75rem;font-weight:700}
+.dith{width:100%;height:75px;object-fit:cover;border-radius:6px}
+.dino{height:45px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:.75rem}
+/* LIGHTBOX */
+.lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:.8rem}
+.lb.open{display:flex!important}
+.lb img{max-width:90vw;max-height:80vh;border-radius:9px}
+.lbc{color:#fff;font-size:.88rem;opacity:.7}
+.lbx{position:absolute;top:1.2rem;left:1.2rem;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:1.4rem;width:40px;height:40px;border-radius:9px;cursor:pointer}
+/* TOAST */
+.toast{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:.65rem 1.3rem;border-radius:25px;font-size:.85rem;font-weight:600;z-index:300;transition:transform .28s;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--green)}
+.toast.err{background:var(--red)}
+.spin{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:600px){.sts{grid-template-columns:1fr 1fr}.sts .st:last-child{grid-column:span 2}.wrap,.ww{padding:1rem}}
+</style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
-<div id="auth-screen">
-  <div class="auth-card">
+<!-- AUTH -->
+<div id="page-auth" class="page on">
+  <div class="auth-box">
     <div class="auth-logo">
-      <div class="icon">📋</div>
+      <div class="auth-icon">📋</div>
       <h1>منصة شواهد الأداء</h1>
       <p>نظام توثيق أداء المعلمين</p>
     </div>
-    <div class="tab-switch">
-      <button class="active" onclick="switchTab('login')">تسجيل الدخول</button>
-      <button onclick="switchTab('register')">حساب جديد</button>
+    <div class="tabs">
+      <button class="on" onclick="showTab('li')">تسجيل الدخول</button>
+      <button onclick="showTab('rg')">حساب جديد</button>
     </div>
-
-    <!-- Login Form -->
-    <div id="login-form">
-      <div class="form-group">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="login-email" placeholder="example@school.edu" />
-      </div>
-      <div class="form-group">
-        <label>كلمة المرور</label>
-        <input type="password" id="login-pass" placeholder="••••••••" />
-      </div>
-      <button class="btn-primary" onclick="doLogin()">
-        <span id="login-btn-text">دخول</span>
-      </button>
+    <div id="tab-li">
+      <div class="fg"><label>البريد الإلكتروني</label><input type="email" id="li-e" placeholder="example@school.edu"/></div>
+      <div class="fg"><label>كلمة المرور</label><input type="password" id="li-p" placeholder="••••••••"/></div>
+      <button class="btn-m" onclick="doLogin()"><span id="li-t">دخول</span></button>
     </div>
-
-    <!-- Register Form -->
-    <div id="register-form" style="display:none">
-      <div class="form-group">
-        <label>الاسم الكامل</label>
-        <input type="text" id="reg-name" placeholder="اسمك الكامل" />
-      </div>
-      <div class="form-group">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="reg-email" placeholder="example@school.edu" />
-      </div>
-      <div class="form-group">
-        <label>كلمة المرور</label>
-        <input type="password" id="reg-pass" placeholder="٦ أحرف على الأقل" />
-      </div>
-      <div class="form-group">
-        <label>الدور</label>
-        <select id="reg-role">
-          <option value="teacher">معلم</option>
-          <option value="admin">مدير</option>
-        </select>
-      </div>
-      <button class="btn-primary" onclick="doRegister()">
-        <span id="reg-btn-text">إنشاء حساب</span>
-      </button>
+    <div id="tab-rg" style="display:none">
+      <div class="fg"><label>الاسم الكامل</label><input type="text" id="rg-n" placeholder="اسمك الكامل"/></div>
+      <div class="fg"><label>البريد الإلكتروني</label><input type="email" id="rg-e" placeholder="example@school.edu"/></div>
+      <div class="fg"><label>كلمة المرور</label><input type="password" id="rg-p" placeholder="٦ أحرف على الأقل"/></div>
+      <div class="fg"><label>الدور</label><select id="rg-r"><option value="teacher">معلم</option><option value="admin">مدير</option></select></div>
+      <button class="btn-m" onclick="doReg()"><span id="rg-t">إنشاء حساب</span></button>
     </div>
-
-    <div class="auth-msg" id="auth-msg"></div>
+    <div class="amsg" id="amsg"></div>
   </div>
 </div>
 
-<!-- APP SCREEN -->
-<div id="app-screen">
-  <nav class="topnav">
-    <div class="topnav-brand">
-      <div class="dot"></div>
-      <span>شواهد الأداء</span>
-    </div>
-    <div class="topnav-right">
-      <span class="user-badge" id="nav-name">—</span>
-      <span class="role-badge" id="nav-role">—</span>
-      <button class="btn-logout" onclick="doLogout()">خروج</button>
-    </div>
+<!-- TEACHER PAGE -->
+<div id="page-teacher" class="page">
+  <nav class="nav">
+    <div class="nb"><div class="nd"></div><span>شواهد الأداء</span></div>
+    <div class="nr"><span class="nn" id="t-nm">—</span><span class="nrl">معلم</span><button class="bo" onclick="doOut()">خروج</button></div>
   </nav>
-
-  <!-- TEACHER VIEW -->
-  <div id="teacher-view">
-    <div class="page-header">
-      <h2 id="teacher-greeting">مرحباً 👋</h2>
+  <div class="wrap">
+    <div class="ph">
+      <h2 id="t-gr">مرحباً 👋</h2>
       <p>ارفع شواهد أدائك للبنود الأحد عشر</p>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
-      </div>
-      <div class="progress-label" id="progress-label">0 من 11 بند مكتمل</div>
+      <div class="pb"><div class="pf" id="pf" style="width:0%"></div></div>
+      <div class="pl" id="pl">0 من 11 بند مكتمل</div>
     </div>
-    <div class="evidence-grid" id="evidence-grid"></div>
+    <div class="el" id="el"></div>
   </div>
+</div>
 
-  <!-- ADMIN VIEW -->
-  <div id="admin-view">
-    <div class="page-header">
-      <h2>لوحة المدير</h2>
-      <p>متابعة شواهد أداء المعلمين</p>
+<!-- ADMIN PAGE -->
+<div id="page-admin" class="page">
+  <nav class="nav">
+    <div class="nb"><div class="nd"></div><span>شواهد الأداء</span></div>
+    <div class="nr"><span class="nn" id="a-nm">—</span><span class="nrl">مدير</span><button class="bo" onclick="doOut()">خروج</button></div>
+  </nav>
+  <div class="ww">
+    <div class="ph" style="margin-bottom:1.5rem"><h2>لوحة المدير</h2><p>متابعة شواهد أداء المعلمين</p></div>
+    <div class="sts">
+      <div class="st"><div class="n" id="s1">0</div><div class="l">إجمالي المعلمين</div></div>
+      <div class="st"><div class="n" id="s2">0</div><div class="l">اكتمل ملفهم</div></div>
+      <div class="st"><div class="n" id="s3">0</div><div class="l">شاهد مرفوع</div></div>
     </div>
-    <div class="admin-stats">
-      <div class="stat-card">
-        <div class="num" id="stat-teachers">0</div>
-        <div class="lbl">إجمالي المعلمين</div>
-      </div>
-      <div class="stat-card">
-        <div class="num" id="stat-complete">0</div>
-        <div class="lbl">اكتمل ملفهم</div>
-      </div>
-      <div class="stat-card">
-        <div class="num" id="stat-evidences">0</div>
-        <div class="lbl">شاهد مرفوع</div>
-      </div>
-    </div>
-    <div class="search-bar">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="search-input" placeholder="ابحث باسم المعلم أو بريده..." oninput="filterTeachers()" />
-    </div>
-    <div class="teacher-table" id="teacher-table">
-      <div style="padding:2rem;text-align:center;color:#aaa">جار تحميل البيانات...</div>
-    </div>
+    <div class="sb"><span>🔍</span><input type="text" id="srch" placeholder="ابحث باسم المعلم..." oninput="filterT()"/></div>
+    <div class="tb" id="tb"><div style="padding:2rem;text-align:center;color:#bbb">جار تحميل البيانات...</div></div>
   </div>
 </div>
 
 <!-- UPLOAD MODAL -->
-<div class="modal-overlay" id="upload-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="modal-title">رفع شاهد</h3>
-      <button class="btn-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
-      <div class="upload-icon">📁</div>
+<div class="ov" id="mup">
+  <div class="mo">
+    <div class="mh"><h3 id="mtit">رفع شاهد</h3><button class="bx" onclick="closeUp()">✕</button></div>
+    <div class="dz" id="dz" onclick="document.getElementById('fi').click()">
+      <div class="dzi">📁</div>
       <p><strong>اضغط لاختيار ملف</strong> أو اسحبه هنا</p>
-      <p style="margin-top:0.4rem;font-size:0.78rem;color:#aaa">JPG, PNG, PDF, DOCX — حتى 10 MB</p>
-      <input type="file" id="file-input" accept="image/*,.pdf,.doc,.docx" onchange="previewFile(event)" />
+      <p style="margin-top:.3rem;font-size:.74rem;color:#bbb">صور، PDF، Word — حتى 10MB</p>
+      <input type="file" id="fi" accept="image/*,.pdf,.doc,.docx" onchange="onFile(event)"/>
     </div>
-    <div class="preview-wrap" id="preview-wrap">
-      <img id="preview-img" src="" alt="معاينة" />
-      <div class="file-info" id="file-info"></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
-      <button class="btn-upload" id="upload-btn" onclick="uploadEvidence()">رفع الشاهد</button>
+    <div class="pv" id="pv"><img id="pi" src="" alt=""/><div class="fi" id="pfi"></div></div>
+    <div class="mbs">
+      <button class="bcl" onclick="closeUp()">إلغاء</button>
+      <button class="bup" id="upb" onclick="doUp()">رفع الشاهد</button>
     </div>
   </div>
 </div>
 
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img id="lightbox-img" src="" alt="" />
-  <div class="lightbox-caption" id="lightbox-cap"></div>
+<div class="lb" id="lb" onclick="closeLb()">
+  <button class="lbx">✕</button>
+  <img id="lbi" src="" alt=""/>
+  <div class="lbc" id="lbc"></div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// =====================================================
-// CONFIGURATION — Replace with your Supabase values
-// =====================================================
-const SUPABASE_URL = 'https://vvgoqbjdubfewgcztvjh.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2Z29xYmpkdWJmZXdnY3p0dmpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MTQyODYsImV4cCI6MjA5MzI5MDI4Nn0._S81G7Rs88yxeeK7Kbii2Zg3sIYgWuQRMMou0UGjKOc';
-const STORAGE_BUCKET = 'PerfEvl';
+const SURL='https://vvgoqbjdubfewgcztvjh.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2Z29xYmpkdWJmZXdnY3p0dmpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MTQyODYsImV4cCI6MjA5MzI5MDI4Nn0._S81G7Rs88yxeeK7Kbii2Zg3sIYgWuQRMMou0UGjKOc';
+const BKT='PerfEvl';
+const {createClient}=supabase;
+const sb=createClient(SURL,SKEY);
 
-// =====================================================
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const BANDS=['خطة الدرس اليومية','سجل المتابعة الطلابية','أنشطة التعلم النشط','التغذية الراجعة للطلاب','استراتيجيات التقويم','التواصل مع أولياء الأمور','التطوير المهني','توظيف التقنية في التعليم','دعم الطلاب ذوي الاحتياجات الخاصة','الأنشطة اللاصفية','التقارير الدورية والنتائج'];
 
-const EVIDENCE_ITEMS = [
-  'خطة الدرس اليومية',
-  'سجل المتابعة الطلابية',
-  'أنشطة التعلم النشط',
-  'التغذية الراجعة للطلاب',
-  'استراتيجيات التقويم',
-  'التواصل مع أولياء الأمور',
-  'التطوير المهني',
-  'توظيف التقنية في التعليم',
-  'دعم الطلاب ذوي الاحتياجات الخاصة',
-  'الأنشطة اللاصفية',
-  'التقارير الدورية والنتائج'
-];
+let ME=null,EVS={},SB=null,SF=null,allT=[],allE=[];
 
-let currentUser = null;
-let currentProfile = null;
-let teacherEvidences = {};
-let selectedBand = null;
-let selectedFile = null;
-let allTeachers = [];
-let allEvidences = [];
-
-// =====================================================
-// AUTH
-// =====================================================
-function switchTab(tab) {
-  document.getElementById('login-form').style.display = tab === 'login' ? '' : 'none';
-  document.getElementById('register-form').style.display = tab === 'register' ? '' : 'none';
-  document.querySelectorAll('.tab-switch button').forEach((b, i) => {
-    b.classList.toggle('active', (tab === 'login' && i === 0) || (tab === 'register' && i === 1));
-  });
-  setAuthMsg('');
+function go(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  document.getElementById('page-'+p).classList.add('on');
 }
 
-function translateError(msg) {
-  if (msg.includes('email rate limit')) return '⚠️ تم تجاوز الحد المسموح لإرسال الإيميلات، انتظر ساعة وحاول مجدداً أو استخدم بريداً مختلفاً.';
-  if (msg.includes('Invalid login')) return 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
-  if (msg.includes('already registered')) return 'هذا البريد الإلكتروني مسجل مسبقاً.';
-  if (msg.includes('Password should')) return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل.';
-  if (msg.includes('Unable to validate')) return 'البريد الإلكتروني غير صحيح.';
-  if (msg.includes('Email not confirmed')) return 'يرجى تأكيد بريدك الإلكتروني أولاً قبل تسجيل الدخول.';
-  return msg;
+function showTab(t){
+  document.getElementById('tab-li').style.display=t==='li'?'':'none';
+  document.getElementById('tab-rg').style.display=t==='rg'?'':'none';
+  document.querySelectorAll('.tabs button').forEach((b,i)=>b.classList.toggle('on',(t==='li'&&i===0)||(t==='rg'&&i===1)));
+  msg('');
 }
 
-function setAuthMsg(msg, success = false) {
-  const el = document.getElementById('auth-msg');
-  el.textContent = success ? msg : translateError(msg);
-  el.className = 'auth-msg' + (success ? ' success' : '');
+function msg(m,ok=false){
+  const e=document.getElementById('amsg');
+  e.textContent=m;
+  e.className='amsg'+(m?(ok?' ok':' err'):'');
 }
 
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-pass').value;
-  if (!email || !pass) return setAuthMsg('يرجى ملء جميع الحقول');
-  const btn = document.getElementById('login-btn-text');
-  btn.innerHTML = '<span class="loader"></span>';
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.textContent = 'دخول';
-  if (error) return setAuthMsg(error.message);
-  // onAuthStateChange سيتولى الأمر تلقائياً
+function ea(e){
+  if(!e)return'';
+  const m=e.message||String(e);
+  if(m.includes('rate limit'))return'⚠️ تجاوزت الحد المسموح، انتظر ساعة أو استخدم بريداً آخر';
+  if(m.includes('Invalid login'))return'البريد أو كلمة المرور غير صحيحة';
+  if(m.includes('already registered'))return'هذا البريد مسجل مسبقاً';
+  if(m.includes('Email not confirmed'))return'يرجى تأكيد بريدك الإلكتروني أولاً';
+  if(m.includes('Password'))return'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+  return m;
 }
 
-async function doRegister() {
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass = document.getElementById('reg-pass').value;
-  const role = document.getElementById('reg-role').value;
-  if (!name || !email || !pass) return setAuthMsg('يرجى ملء جميع الحقول');
-  if (pass.length < 6) return setAuthMsg('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
-  const btn = document.getElementById('reg-btn-text');
-  btn.innerHTML = '<span class="loader"></span>';
-  const { data, error } = await sb.auth.signUp({
-    email, password: pass,
-    options: { data: { full_name: name, role } }
-  });
-  btn.textContent = 'إنشاء حساب';
-  if (error) return setAuthMsg(error.message);
-  if (data.user) {
-    // Insert profile
-    await sb.from('profiles').upsert({
-      id: data.user.id, full_name: name, email, role
-    });
-    setAuthMsg('✅ تم إنشاء حسابك! تم إرسال رابط تأكيد إلى بريدك الإلكتروني — تحقق من بريدك واضغط الرابط أولاً ثم سجّل دخولك.', true);
-    switchTab('login');
+async function doLogin(){
+  const email=document.getElementById('li-e').value.trim();
+  const pass=document.getElementById('li-p').value;
+  if(!email||!pass)return msg('يرجى ملء جميع الحقول');
+  const btn=document.getElementById('li-t');
+  btn.innerHTML='<span class="spin"></span>';
+  const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  btn.textContent='دخول';
+  if(error)return msg(ea(error));
+  await boot(data.user);
+}
+
+async function doReg(){
+  const name=document.getElementById('rg-n').value.trim();
+  const email=document.getElementById('rg-e').value.trim();
+  const pass=document.getElementById('rg-p').value;
+  const role=document.getElementById('rg-r').value;
+  if(!name||!email||!pass)return msg('يرجى ملء جميع الحقول');
+  if(pass.length<6)return msg('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+  const btn=document.getElementById('rg-t');
+  btn.innerHTML='<span class="spin"></span>';
+  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name,role}}});
+  btn.textContent='إنشاء حساب';
+  if(error)return msg(ea(error));
+  if(data.user){
+    await sb.from('profiles').upsert({id:data.user.id,full_name:name,email,role});
+    if(data.session){await boot(data.user);}
+    else{msg('✅ تم إنشاء حسابك! تحقق من بريدك وأكد التسجيل ثم سجّل دخولك.',true);showTab('li');}
   }
 }
 
-async function doLogout() {
-  await sb.auth.signOut();
-  location.reload();
-}
+async function doOut(){await sb.auth.signOut();ME=null;EVS={};go('auth');}
 
-// =====================================================
-// INIT
-// =====================================================
-async function initApp(user) {
-  currentUser = user;
-
-  try {
-    // محاولة جلب الـ profile بدون .single() لتجنب خطأ 406
-    const { data: profiles } = await sb.from('profiles').select('*').eq('id', user.id);
-    const profile = profiles && profiles.length > 0 ? profiles[0] : null;
-
-    if (!profile) {
-      const meta = user.user_metadata || {};
-      const newProfile = {
-        id: user.id,
-        full_name: meta.full_name || user.email,
-        email: user.email,
-        role: meta.role || 'teacher'
-      };
-      await sb.from('profiles').upsert(newProfile);
-      currentProfile = newProfile;
-    } else {
-      currentProfile = profile;
-    }
-  } catch(e) {
-    console.error('initApp error:', e);
-    // fallback
-    const meta = user.user_metadata || {};
-    currentProfile = {
-      id: user.id,
-      full_name: meta.full_name || user.email,
-      email: user.email,
-      role: meta.role || 'teacher'
-    };
+async function boot(user){
+  let{data:rows}=await sb.from('profiles').select('*').eq('id',user.id);
+  let p=rows&&rows.length>0?rows[0]:null;
+  if(!p){
+    const m=user.user_metadata||{};
+    p={id:user.id,full_name:m.full_name||user.email,email:user.email,role:m.role||'teacher'};
+    await sb.from('profiles').upsert(p);
   }
-
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = '';
-  document.getElementById('nav-name').textContent = currentProfile.full_name;
-  document.getElementById('nav-role').textContent = currentProfile.role === 'admin' ? 'مدير' : 'معلم';
-
-  if (currentProfile.role === 'admin') {
-    document.getElementById('admin-view').classList.add('visible');
-    loadAdminData();
-  } else {
-    document.getElementById('teacher-view').classList.add('visible');
-    document.getElementById('teacher-greeting').textContent = `مرحباً ${currentProfile.full_name} 👋`;
-    loadTeacherData();
+  ME=p;
+  if(ME.role==='admin'){
+    document.getElementById('a-nm').textContent=ME.full_name;
+    go('admin');
+    loadAdmin();
+  }else{
+    document.getElementById('t-nm').textContent=ME.full_name;
+    document.getElementById('t-gr').textContent=`مرحباً ${ME.full_name} 👋`;
+    go('teacher');
+    loadTeacher();
   }
 }
 
-// =====================================================
-// TEACHER LOGIC
-// =====================================================
-async function loadTeacherData() {
-  const { data } = await sb.from('evidences').select('*').eq('teacher_id', currentUser.id);
-  teacherEvidences = {};
-  if (data) data.forEach(e => { teacherEvidences[e.band_index] = e; });
-  renderEvidenceGrid();
+async function loadTeacher(){
+  const{data}=await sb.from('evidences').select('*').eq('teacher_id',ME.id);
+  EVS={};
+  if(data)data.forEach(e=>EVS[e.band_index]=e);
+  renderTeacher();
 }
 
-function renderEvidenceGrid() {
-  const grid = document.getElementById('evidence-grid');
-  const count = Object.keys(teacherEvidences).length;
-  document.getElementById('progress-fill').style.width = (count / 11 * 100) + '%';
-  document.getElementById('progress-label').textContent = `${count} من 11 بند مكتمل`;
-
-  grid.innerHTML = EVIDENCE_ITEMS.map((item, i) => {
-    const ev = teacherEvidences[i];
-    const done = !!ev;
-    return `
-      <div class="evidence-card ${done ? 'completed' : ''}" onclick="openUploadModal(${i})">
-        <div class="card-num">${done ? '✓' : i + 1}</div>
-        <div class="card-info">
-          <div class="card-title">${item}</div>
-          <div class="card-subtitle">${done ? ev.file_name : 'لم يتم الرفع بعد'}</div>
-        </div>
-        <div class="card-status ${done ? 'status-done' : 'status-pending'}">
-          <div class="check-icon ${done ? 'done' : 'pending'}">${done ? '✓' : '○'}</div>
-          <span>${done ? 'مكتمل' : 'ارفع'}</span>
-        </div>
-      </div>
-    `;
+function renderTeacher(){
+  const c=Object.keys(EVS).length;
+  document.getElementById('pf').style.width=(c/11*100)+'%';
+  document.getElementById('pl').textContent=`${c} من 11 بند مكتمل`;
+  document.getElementById('el').innerHTML=BANDS.map((b,i)=>{
+    const ev=EVS[i];
+    return`<div class="ec ${ev?'done':''}" onclick="openUp(${i})">
+      <div class="en">${ev?'✓':i+1}</div>
+      <div class="ei"><div class="et">${b}</div><div class="es">${ev?ev.file_name:'لم يتم الرفع بعد'}</div></div>
+      <span>${ev?'✅':'○'}</span>
+    </div>`;
   }).join('');
 }
 
-function openUploadModal(bandIndex) {
-  selectedBand = bandIndex;
-  selectedFile = null;
-  document.getElementById('modal-title').textContent = `بند ${bandIndex + 1}: ${EVIDENCE_ITEMS[bandIndex]}`;
-  document.getElementById('preview-wrap').classList.remove('show');
-  document.getElementById('file-input').value = '';
-  document.getElementById('upload-modal').classList.add('open');
+function openUp(i){
+  SB=i;SF=null;
+  document.getElementById('mtit').textContent=`بند ${i+1}: ${BANDS[i]}`;
+  document.getElementById('pv').classList.remove('show');
+  document.getElementById('fi').value='';
+  document.getElementById('mup').classList.add('open');
+}
+function closeUp(){document.getElementById('mup').classList.remove('open');}
+
+function onFile(e){
+  SF=e.target.files[0];if(!SF)return;
+  document.getElementById('pfi').textContent=`${SF.name} — ${(SF.size/1024).toFixed(0)} KB`;
+  const img=document.getElementById('pi');
+  if(SF.type.startsWith('image/')){img.src=URL.createObjectURL(SF);img.style.display='';}
+  else img.style.display='none';
+  document.getElementById('pv').classList.add('show');
 }
 
-function closeModal() {
-  document.getElementById('upload-modal').classList.remove('open');
-}
-
-function previewFile(e) {
-  selectedFile = e.target.files[0];
-  if (!selectedFile) return;
-  const wrap = document.getElementById('preview-wrap');
-  const img = document.getElementById('preview-img');
-  const info = document.getElementById('file-info');
-  info.textContent = `${selectedFile.name} — ${(selectedFile.size / 1024).toFixed(0)} KB`;
-  if (selectedFile.type.startsWith('image/')) {
-    img.src = URL.createObjectURL(selectedFile);
-    img.style.display = '';
-  } else {
-    img.style.display = 'none';
-    img.src = '';
-  }
-  wrap.classList.add('show');
-}
-
-async function uploadEvidence() {
-  if (!selectedFile) return showToast('اختر ملفاً أولاً', 'error');
-  const btn = document.getElementById('upload-btn');
-  btn.innerHTML = '<span class="loader"></span> جار الرفع...';
-  btn.disabled = true;
-
-  try {
-    const ext = selectedFile.name.split('.').pop();
-    const path = `${currentUser.id}/${selectedBand}.${ext}`;
-    const { error: upErr } = await sb.storage.from(STORAGE_BUCKET).upload(path, selectedFile, { upsert: true });
-    if (upErr) throw upErr;
-
-    const { data: urlData } = sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
-
-    const { error: dbErr } = await sb.from('evidences').upsert({
-      teacher_id: currentUser.id,
-      band_index: selectedBand,
-      file_name: selectedFile.name,
-      file_url: urlData.publicUrl,
-      file_type: selectedFile.type,
-    });
-    if (dbErr) throw dbErr;
-
-    closeModal();
-    showToast('تم رفع الشاهد بنجاح ✓', 'success');
-    loadTeacherData();
-  } catch (err) {
-    showToast('حدث خطأ: ' + err.message, 'error');
-  }
-  btn.innerHTML = 'رفع الشاهد';
-  btn.disabled = false;
-}
-
-// Drag & drop
-const dz = document.getElementById('drop-zone');
-dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
-dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
-dz.addEventListener('drop', e => {
-  e.preventDefault(); dz.classList.remove('drag');
-  const f = e.dataTransfer.files[0];
-  if (f) { document.getElementById('file-input').files = e.dataTransfer.files; previewFile({ target: { files: [f] } }); }
+const dzel=document.getElementById('dz');
+dzel.addEventListener('dragover',e=>{e.preventDefault();dzel.classList.add('drag');});
+dzel.addEventListener('dragleave',()=>dzel.classList.remove('drag'));
+dzel.addEventListener('drop',e=>{
+  e.preventDefault();dzel.classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f){document.getElementById('fi').files=e.dataTransfer.files;onFile({target:{files:[f]}});}
 });
 
-// =====================================================
-// ADMIN LOGIC
-// =====================================================
-async function loadAdminData() {
-  const [{ data: teachers }, { data: evidences }] = await Promise.all([
-    sb.from('profiles').select('*').eq('role', 'teacher'),
-    sb.from('evidences').select('*')
-  ]);
-  allTeachers = teachers || [];
-  allEvidences = evidences || [];
-  renderAdminTable(allTeachers, allEvidences);
+async function doUp(){
+  if(!SF)return toast('اختر ملفاً أولاً','err');
+  const btn=document.getElementById('upb');
+  btn.innerHTML='<span class="spin"></span> جار الرفع...';btn.disabled=true;
+  try{
+    const ext=SF.name.split('.').pop();
+    const path=`${ME.id}/${SB}.${ext}`;
+    const{error:e1}=await sb.storage.from(BKT).upload(path,SF,{upsert:true});
+    if(e1)throw e1;
+    const{data:ud}=sb.storage.from(BKT).getPublicUrl(path);
+    const{error:e2}=await sb.from('evidences').upsert({teacher_id:ME.id,band_index:SB,file_name:SF.name,file_url:ud.publicUrl,file_type:SF.type});
+    if(e2)throw e2;
+    closeUp();toast('تم رفع الشاهد بنجاح ✓','ok');loadTeacher();
+  }catch(err){toast('خطأ: '+err.message,'err');}
+  btn.innerHTML='رفع الشاهد';btn.disabled=false;
 }
 
-function renderAdminTable(teachers, evidences) {
-  const evMap = {};
-  evidences.forEach(e => {
-    if (!evMap[e.teacher_id]) evMap[e.teacher_id] = {};
-    evMap[e.teacher_id][e.band_index] = e;
-  });
+async function loadAdmin(){
+  const[{data:t},{data:e}]=await Promise.all([
+    sb.from('profiles').select('*').eq('role','teacher'),
+    sb.from('evidences').select('*')
+  ]);
+  allT=t||[];allE=e||[];renderAdmin(allT,allE);
+}
 
-  const complete = teachers.filter(t => Object.keys(evMap[t.id] || {}).length === 11).length;
-  const total = evidences.length;
-
-  document.getElementById('stat-teachers').textContent = teachers.length;
-  document.getElementById('stat-complete').textContent = complete;
-  document.getElementById('stat-evidences').textContent = total;
-
-  const table = document.getElementById('teacher-table');
-  if (!teachers.length) {
-    table.innerHTML = '<div style="padding:2rem;text-align:center;color:#aaa">لا يوجد معلمون مسجلون بعد</div>';
-    return;
-  }
-
-  table.innerHTML = teachers.map(t => {
-    const tevs = evMap[t.id] || {};
-    const count = Object.keys(tevs).length;
-    const initials = t.full_name.split(' ').map(w => w[0]).slice(0, 2).join('');
-
-    const dots = EVIDENCE_ITEMS.map((name, i) => {
-      const ev = tevs[i];
-      return `<div class="dot-item ${ev ? 'filled' : ''}" title="${name}${ev ? ': ' + ev.file_name : ''}" 
-        ${ev ? `onclick="event.stopPropagation();showLightbox('${ev.file_url}','${name}','${ev.file_type}')"` : ''}>${i + 1}</div>`;
+function renderAdmin(teachers,evidences){
+  const em={};
+  evidences.forEach(e=>{if(!em[e.teacher_id])em[e.teacher_id]={};em[e.teacher_id][e.band_index]=e;});
+  const comp=teachers.filter(t=>Object.keys(em[t.id]||{}).length===11).length;
+  document.getElementById('s1').textContent=teachers.length;
+  document.getElementById('s2').textContent=comp;
+  document.getElementById('s3').textContent=evidences.length;
+  if(!teachers.length){document.getElementById('tb').innerHTML='<div style="padding:2rem;text-align:center;color:#bbb">لا يوجد معلمون مسجلون بعد</div>';return;}
+  document.getElementById('tb').innerHTML=teachers.map(t=>{
+    const te=em[t.id]||{};
+    const c=Object.keys(te).length;
+    const ini=t.full_name.split(' ').map(w=>w[0]).slice(0,2).join('');
+    const dots=BANDS.map((b,i)=>{
+      const ev=te[i];
+      return`<div class="dt ${ev?'on':''}" title="${b}" ${ev?`onclick="event.stopPropagation();showLb('${ev.file_url}','${b}','${ev.file_type||''}')"`:''}>
+        ${i+1}</div>`;
     }).join('');
-
-    return `
-      <div class="teacher-row" onclick="toggleDetail('detail-${t.id}')">
-        <div class="teacher-row-top">
-          <div class="teacher-avatar">${initials}</div>
-          <div class="teacher-meta">
-            <div class="teacher-name">${t.full_name}</div>
-            <div class="teacher-email">${t.email}</div>
-          </div>
-          <div class="completion-pill ${count === 11 ? 'full' : ''}">${count}/11</div>
-        </div>
-        <div class="dots-grid">${dots}</div>
-        <div class="teacher-detail" id="detail-${t.id}">
-          <div class="detail-grid">
-            ${EVIDENCE_ITEMS.map((name, i) => {
-              const ev = tevs[i];
-              const isImg = ev && ev.file_type && ev.file_type.startsWith('image/');
-              return `
-                <div class="detail-item ${ev ? 'has-file' : ''}" ${ev ? `onclick="showLightbox('${ev.file_url}','${name}','${ev.file_type}')"` : ''}>
-                  <div class="detail-item-header">
-                    <div class="detail-item-num">${i + 1}</div>
-                    <div class="detail-item-name">${name}</div>
-                  </div>
-                  ${ev
-                    ? isImg
-                      ? `<img class="detail-item-thumb" src="${ev.file_url}" alt="${name}" loading="lazy" />`
-                      : `<div style="background:#f0fff6;border-radius:6px;padding:0.5rem;font-size:0.75rem;color:var(--green);text-align:center;">📄 ${ev.file_name}</div>`
-                    : `<div class="detail-item-nofile">لم يرفع بعد</div>`
-                  }
-                </div>
-              `;
-            }).join('')}
-          </div>
-        </div>
+    const detail=BANDS.map((b,i)=>{
+      const ev=te[i];
+      const isImg=ev&&ev.file_type&&ev.file_type.startsWith('image/');
+      return`<div class="di ${ev?'h':''}" ${ev?`onclick="showLb('${ev.file_url}','${b}','${ev.file_type||''}')"`:''}>
+        <div class="dih"><div class="din">${i+1}</div><div class="dim">${b}</div></div>
+        ${ev?(isImg?`<img class="dith" src="${ev.file_url}" loading="lazy"/>`:`<div style="background:#f0fff6;border-radius:5px;padding:.4rem;font-size:.72rem;color:var(--green);text-align:center">📄 ${ev.file_name}</div>`):`<div class="dino">لم يرفع بعد</div>`}
+      </div>`;
+    }).join('');
+    return`<div class="tr" onclick="toggleD('d${t.id}')">
+      <div class="trt">
+        <div class="av">${ini}</div>
+        <div class="tm"><div class="tn">${t.full_name}</div><div class="te">${t.email}</div></div>
+        <div class="pi ${c===11?'f':''}">${c}/11</div>
       </div>
-    `;
+      <div class="dts">${dots}</div>
+      <div class="dl" id="d${t.id}"><div class="dg">${detail}</div></div>
+    </div>`;
   }).join('');
 }
 
-function toggleDetail(id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.toggle('open');
+function toggleD(id){document.getElementById(id)?.classList.toggle('open');}
+function filterT(){
+  const q=document.getElementById('srch').value.toLowerCase();
+  renderAdmin(allT.filter(t=>t.full_name.toLowerCase().includes(q)||t.email.toLowerCase().includes(q)),allE);
 }
 
-function filterTeachers() {
-  const q = document.getElementById('search-input').value.toLowerCase();
-  const filtered = allTeachers.filter(t =>
-    t.full_name.toLowerCase().includes(q) || t.email.toLowerCase().includes(q)
-  );
-  const evMap = {};
-  allEvidences.forEach(e => {
-    if (!evMap[e.teacher_id]) evMap[e.teacher_id] = {};
-    evMap[e.teacher_id][e.band_index] = e;
-  });
-  renderAdminTable(filtered, allEvidences);
+function showLb(url,name,type){
+  if(!type||!type.startsWith('image/')){window.open(url,'_blank');return;}
+  document.getElementById('lbi').src=url;
+  document.getElementById('lbc').textContent=name;
+  document.getElementById('lb').classList.add('open');
+}
+function closeLb(){document.getElementById('lb').classList.remove('open');}
+
+function toast(m,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=m;t.className='toast show '+type;
+  setTimeout(()=>t.className='toast',3000);
 }
 
-// =====================================================
-// LIGHTBOX
-// =====================================================
-function showLightbox(url, name, type) {
-  const lb = document.getElementById('lightbox');
-  const img = document.getElementById('lightbox-img');
-  const cap = document.getElementById('lightbox-cap');
-  if (type && type.startsWith('image/')) {
-    img.src = url;
-    img.style.display = '';
-  } else {
-    img.style.display = 'none';
-    window.open(url, '_blank');
-    return;
-  }
-  cap.textContent = name;
-  lb.classList.add('open');
-}
-
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
-
-// =====================================================
-// TOAST
-// =====================================================
-function showToast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + type;
-  setTimeout(() => { t.className = 'toast'; }, 3000);
-}
-
-// =====================================================
-// BOOT
-// =====================================================
-(async () => {
-  try {
-    const { data: { session }, error } = await sb.auth.getSession();
-    if (error) {
-      console.error('Session error:', error);
-      return;
-    }
-    if (session && session.user) {
-      await initApp(session.user);
-    }
-    // استمع لتغييرات الـ auth
-    sb.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        await initApp(session.user);
-      } else if (event === 'SIGNED_OUT') {
-        document.getElementById('auth-screen').style.display = '';
-        document.getElementById('app-screen').style.display = 'none';
-        document.getElementById('teacher-view').classList.remove('visible');
-        document.getElementById('admin-view').classList.remove('visible');
-      }
-    });
-  } catch(e) {
-    console.error('Boot error:', e);
-  }
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(session?.user)await boot(session.user);
 })();
 </script>
 </body>
