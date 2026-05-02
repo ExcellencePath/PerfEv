@@ -253,6 +253,7 @@
 
     /* ===== TEACHER VIEW ===== */
     #teacher-view, #admin-view { display: none; padding: 2rem; max-width: 900px; margin: 0 auto; }
+    #teacher-view.visible, #admin-view.visible { display: block !important; }
 
     .page-header {
       margin-bottom: 2rem;
@@ -1110,10 +1111,10 @@ async function initApp(user) {
   document.getElementById('nav-role').textContent = currentProfile.role === 'admin' ? 'مدير' : 'معلم';
 
   if (currentProfile.role === 'admin') {
-    document.getElementById('admin-view').style.display = '';
+    document.getElementById('admin-view').classList.add('visible');
     loadAdminData();
   } else {
-    document.getElementById('teacher-view').style.display = '';
+    document.getElementById('teacher-view').classList.add('visible');
     document.getElementById('teacher-greeting').textContent = `مرحباً ${currentProfile.full_name} 👋`;
     loadTeacherData();
   }
@@ -1380,8 +1381,8 @@ function showToast(msg, type = '') {
       } else if (event === 'SIGNED_OUT') {
         document.getElementById('auth-screen').style.display = '';
         document.getElementById('app-screen').style.display = 'none';
-        document.getElementById('teacher-view').style.display = 'none';
-        document.getElementById('admin-view').style.display = 'none';
+        document.getElementById('teacher-view').classList.remove('visible');
+        document.getElementById('admin-view').classList.remove('visible');
       }
     });
   } catch(e) {
