@@ -10,9 +10,18 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--ink:#0d1117;--paper:#f5f0e8;--cream:#ede8da;--gold:#c9933a;--teal:#1a6b5c;--teal2:#2a8a76;--red:#c0392b;--green:#1e7e48;--sh:rgba(13,17,23,0.12)}
 body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh}
-.page{display:none!important}
-.page.on{display:block!important}
+.page{display:none!important}.page.on{display:block!important}
 #page-auth.on{display:flex!important}
+#page-loading.on{display:flex!important}
+
+/* LOADING */
+#page-loading{align-items:center;justify-content:center;flex-direction:column;gap:1rem;position:fixed;inset:0;background:var(--paper);z-index:999;min-height:100vh}
+.ld-icon{width:60px;height:60px;background:linear-gradient(135deg,var(--teal),var(--gold));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.7rem}
+.ld-title{font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:900}
+.spin{display:inline-block;width:32px;height:32px;border:3px solid var(--cream);border-top-color:var(--teal);border-radius:50%;animation:sp .7s linear infinite}
+.spin-sm{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
 /* AUTH */
 #page-auth{align-items:center;justify-content:center;padding:2rem;min-height:100vh}
 .auth-box{background:#fff;border-radius:20px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 20px 60px var(--sh)}
@@ -25,13 +34,17 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 .tabs button.on{background:#fff;color:var(--teal);box-shadow:0 2px 8px var(--sh)}
 .fg{margin-bottom:1rem}
 .fg label{display:block;font-size:.82rem;font-weight:600;color:#555;margin-bottom:.35rem}
+.ph-wrap{display:flex;border:1.5px solid #e0ddd6;border-radius:10px;overflow:hidden;background:#fafaf8;transition:border-color .2s}
+.ph-wrap:focus-within{border-color:var(--teal);background:#fff}
+.ph-pre{padding:.7rem .8rem;background:var(--cream);font-size:.88rem;font-weight:700;color:#555;border-left:1.5px solid #e0ddd6;white-space:nowrap}
+.ph-wrap input{flex:1;padding:.7rem .8rem;border:none;background:transparent;font-family:'Cairo',sans-serif;font-size:.92rem;color:var(--ink);outline:none;direction:ltr;text-align:left}
 .fg input,.fg select{width:100%;padding:.7rem 1rem;border:1.5px solid #e0ddd6;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.92rem;background:#fafaf8;color:var(--ink);outline:none;transition:border-color .2s}
 .fg input:focus,.fg select:focus{border-color:var(--teal);background:#fff}
 .btn-m{width:100%;padding:.8rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.4rem;box-shadow:0 4px 14px rgba(26,107,92,.28);transition:all .2s}
 .btn-m:hover{transform:translateY(-1px)}
 .amsg{text-align:center;font-size:.82rem;margin-top:.8rem;min-height:1rem;padding:.5rem;border-radius:8px}
-.amsg.err{color:var(--red)}
-.amsg.ok{color:var(--green);background:#f0fff6;border:1px solid #b7f0d0}
+.amsg.err{color:var(--red)}.amsg.ok{color:var(--green);background:#f0fff6;border:1px solid #b7f0d0}
+
 /* NAV */
 .nav{background:var(--ink);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;position:sticky;top:0;z-index:50}
 .nb{display:flex;align-items:center;gap:.6rem;color:#fff}
@@ -42,30 +55,55 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 .nrl{background:var(--gold);color:var(--ink);padding:.2rem .65rem;border-radius:20px;font-size:.72rem;font-weight:700}
 .bo{background:rgba(255,255,255,.08);color:#aaa;border:1px solid rgba(255,255,255,.1);padding:.3rem .7rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.78rem;cursor:pointer}
 .bo:hover{background:rgba(255,255,255,.15);color:#fff}
+
 /* TEACHER */
 .wrap{max-width:860px;margin:0 auto;padding:2rem 1.5rem}
-.ph h2{font-family:'Tajawal',sans-serif;font-size:1.7rem;font-weight:900}
-.ph p{color:#777;font-size:.88rem;margin-top:.2rem}
+.ph-hd h2{font-family:'Tajawal',sans-serif;font-size:1.7rem;font-weight:900}
+.ph-hd p{color:#777;font-size:.88rem;margin-top:.2rem}
 .pb{background:var(--cream);border-radius:30px;height:8px;margin-top:.9rem;overflow:hidden}
 .pf{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:30px;transition:width .5s}
 .pl{font-size:.78rem;color:#999;margin-top:.35rem}
-.el{margin-top:1.5rem;display:flex;flex-direction:column;gap:.8rem}
-.ec{background:#fff;border-radius:13px;padding:1.1rem 1.3rem;display:flex;align-items:center;gap:1rem;border:2px solid transparent;box-shadow:0 2px 10px var(--sh);cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
-.ec:hover{box-shadow:0 5px 20px var(--sh);transform:translateY(-1px)}
-.ec.done{border-color:var(--green);background:linear-gradient(135deg,#fff,#f0fff6)}
-.ec.done::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;background:var(--green)}
-.en{width:40px;height:40px;border-radius:9px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:900;color:#999;flex-shrink:0}
-.ec.done .en{background:var(--green);color:#fff}
-.ei{flex:1}
-.et{font-size:.92rem;font-weight:700}
-.es{font-size:.75rem;color:#999;margin-top:.15rem}
+
+/* BAND CARDS */
+.band-list{margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.band-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px var(--sh);overflow:hidden;border:2px solid transparent;transition:border-color .2s}
+.band-card.partial{border-color:var(--gold)}
+.band-card.full{border-color:var(--green)}
+.band-header{padding:1rem 1.2rem;display:flex;align-items:center;gap:.9rem;cursor:pointer}
+.band-header:hover{background:#fafaf8}
+.band-num{width:38px;height:38px;border-radius:9px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:900;color:#999;flex-shrink:0}
+.band-card.full .band-num{background:var(--green);color:#fff}
+.band-card.partial .band-num{background:var(--gold);color:#fff}
+.band-info{flex:1}
+.band-title{font-size:.95rem;font-weight:700}
+.band-sub{font-size:.75rem;color:#999;margin-top:.15rem}
+.band-pill{padding:.25rem .7rem;border-radius:20px;font-size:.75rem;font-weight:700;background:var(--cream);color:#999}
+.band-card.full .band-pill{background:#d4f5e3;color:var(--green)}
+.band-card.partial .band-pill{background:#fff3dc;color:#a06010}
+.band-arrow{font-size:.8rem;color:#ccc;transition:transform .2s}
+.band-card.open .band-arrow{transform:rotate(180deg)}
+
+/* SUB EVIDENCES */
+.sub-list{border-top:1px solid var(--cream);padding:.8rem 1rem;display:none;flex-direction:column;gap:.6rem}
+.band-card.open .sub-list{display:flex}
+.sub-item{display:flex;align-items:center;gap:.8rem;padding:.7rem .9rem;border-radius:10px;border:1.5px solid var(--cream);background:#fafaf8;cursor:pointer;transition:all .2s}
+.sub-item:hover{border-color:var(--teal);background:#f0fff8}
+.sub-item.done{border-color:var(--green);background:linear-gradient(135deg,#fff,#f0fff6)}
+.sub-check{width:28px;height:28px;border-radius:7px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0}
+.sub-item.done .sub-check{background:var(--green);color:#fff}
+.sub-name{flex:1;font-size:.85rem;font-weight:600}
+.sub-file{font-size:.72rem;color:#999;margin-top:.1rem}
+.sub-status{font-size:.8rem;color:#ccc}
+.sub-item.done .sub-status{color:var(--green)}
+
 /* MODAL */
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(3px)}
 .ov.open{display:flex!important}
 .mo{background:#fff;border-radius:18px;padding:1.8rem;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:up .22s ease}
 @keyframes up{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
-.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.3rem}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
 .mh h3{font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:900}
+.m-sub{font-size:.8rem;color:#888;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1px solid var(--cream)}
 .bx{width:30px;height:30px;border-radius:7px;border:none;background:var(--cream);font-size:1rem;cursor:pointer}
 .dz{border:2px dashed #d0ccc4;border-radius:12px;padding:2rem 1.2rem;text-align:center;cursor:pointer;background:var(--paper);margin-bottom:1rem;transition:all .2s}
 .dz:hover,.dz.drag{border-color:var(--teal);background:#f0fff8}
@@ -75,12 +113,13 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 .dz strong{color:var(--teal)}
 .pv{display:none;margin-bottom:1rem;text-align:center}
 .pv img{max-width:100%;max-height:180px;border-radius:9px;border:2px solid var(--cream)}
-.pv .fi{font-size:.78rem;color:#999;margin-top:.4rem}
+.pv .pfi{font-size:.78rem;color:#999;margin-top:.4rem}
 .pv.show{display:block}
 .mbs{display:flex;gap:.7rem}
 .bcl{flex:1;padding:.7rem;border:1.5px solid #e0ddd6;border-radius:9px;background:transparent;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;color:#777}
 .bup{flex:2;padding:.7rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:9px;font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer}
 .bup:disabled{opacity:.5;cursor:not-allowed}
+
 /* ADMIN */
 .ww{max-width:1080px;margin:0 auto;padding:2rem 1.5rem}
 .sts{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
@@ -100,41 +139,56 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 .te{font-size:.75rem;color:#999;margin-top:.1rem}
 .pi{background:var(--cream);padding:.25rem .7rem;border-radius:20px;font-size:.78rem;font-weight:700;color:#999}
 .pi.f{background:#d4f5e3;color:var(--green)}
-.dts{display:flex;gap:4px;margin-top:.7rem;flex-wrap:wrap}
-.dt{width:26px;height:26px;border-radius:6px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#bbb;cursor:pointer;transition:all .2s}
-.dt.on{background:var(--green);color:#fff}
-.dt:hover{transform:scale(1.15)}
-.dl{display:none;margin-top:.9rem;padding:1rem;background:var(--paper);border-radius:11px;border:1px solid var(--cream)}
+/* progress mini bar */
+.mini-bar{height:5px;background:var(--cream);border-radius:10px;margin-top:.6rem;overflow:hidden}
+.mini-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:10px;transition:width .4s}
+.dl{display:none;margin-top:.9rem;background:var(--paper);border-radius:11px;border:1px solid var(--cream);overflow:hidden}
 .dl.open{display:block}
-.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.7rem}
-.di{background:#fff;border-radius:9px;padding:.75rem;border:2px solid var(--cream)}
-.di.h{border-color:var(--green);cursor:pointer}
-.dih{display:flex;align-items:center;gap:.45rem;margin-bottom:.45rem}
-.din{width:20px;height:20px;border-radius:4px;background:var(--cream);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:#999}
-.di.h .din{background:var(--green);color:#fff}
-.dim{font-size:.75rem;font-weight:700}
-.dith{width:100%;height:75px;object-fit:cover;border-radius:6px}
-.dino{height:45px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:.75rem}
+/* admin band accordion */
+.adm-band{border-bottom:1px solid var(--cream)}
+.adm-band:last-child{border-bottom:none}
+.adm-band-hd{padding:.7rem 1rem;display:flex;align-items:center;gap:.7rem;cursor:pointer;font-size:.85rem;font-weight:700}
+.adm-band-hd:hover{background:#f5f5f0}
+.adm-band-num{width:24px;height:24px;border-radius:6px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;color:#999;flex-shrink:0}
+.adm-band-hd.has-all .adm-band-num{background:var(--green);color:#fff}
+.adm-band-hd.has-some .adm-band-num{background:var(--gold);color:#fff}
+.adm-sub-list{display:none;padding:.5rem .8rem;background:#fff}
+.adm-band.open .adm-sub-list{display:block}
+.adm-sub-item{display:flex;align-items:center;gap:.6rem;padding:.4rem .5rem;border-radius:7px;margin-bottom:.3rem;font-size:.78rem}
+.adm-sub-item.has{cursor:pointer}
+.adm-sub-item.has:hover{background:#f0fff8}
+.adm-sub-dot{width:10px;height:10px;border-radius:50%;background:var(--cream);flex-shrink:0}
+.adm-sub-item.has .adm-sub-dot{background:var(--green)}
+.adm-sub-name{flex:1;color:#555}
+.adm-sub-item.has .adm-sub-name{color:var(--ink);font-weight:600}
+.adm-sub-file{font-size:.7rem;color:#aaa}
+
 /* LIGHTBOX */
 .lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:.8rem}
 .lb.open{display:flex!important}
 .lb img{max-width:90vw;max-height:80vh;border-radius:9px}
 .lbc{color:#fff;font-size:.88rem;opacity:.7}
 .lbx{position:absolute;top:1.2rem;left:1.2rem;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:1.4rem;width:40px;height:40px;border-radius:9px;cursor:pointer}
+
 /* TOAST */
-.toast{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:.65rem 1.3rem;border-radius:25px;font-size:.85rem;font-weight:600;z-index:300;transition:transform .28s;pointer-events:none}
+.toast{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:.65rem 1.3rem;border-radius:25px;font-size:.85rem;font-weight:600;z-index:300;transition:transform .28s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.toast.ok{background:var(--green)}
-.toast.err{background:var(--red)}
-.spin{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
+.toast.ok{background:var(--green)}.toast.err{background:var(--red)}
+
 @media(max-width:600px){.sts{grid-template-columns:1fr 1fr}.sts .st:last-child{grid-column:span 2}.wrap,.ww{padding:1rem}}
 </style>
 </head>
 <body>
 
+<!-- LOADING -->
+<div id="page-loading" class="page on">
+  <div class="ld-icon">📋</div>
+  <div class="ld-title">منصة شواهد الأداء</div>
+  <div class="spin"></div>
+</div>
+
 <!-- AUTH -->
-<div id="page-auth" class="page on">
+<div id="page-auth" class="page">
   <div class="auth-box">
     <div class="auth-logo">
       <div class="auth-icon">📋</div>
@@ -145,14 +199,22 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
       <button class="on" onclick="showTab('li')">تسجيل الدخول</button>
       <button onclick="showTab('rg')">حساب جديد</button>
     </div>
+    <!-- LOGIN -->
     <div id="tab-li">
-      <div class="fg"><label>البريد الإلكتروني</label><input type="email" id="li-e" placeholder="example@school.edu"/></div>
+      <div class="fg">
+        <label>رقم الجوال</label>
+        <div class="ph-wrap"><span class="ph-pre">🇸🇦 +966</span><input type="tel" id="li-ph" placeholder="5XXXXXXXX" maxlength="9"/></div>
+      </div>
       <div class="fg"><label>كلمة المرور</label><input type="password" id="li-p" placeholder="••••••••"/></div>
       <button class="btn-m" onclick="doLogin()"><span id="li-t">دخول</span></button>
     </div>
+    <!-- REGISTER -->
     <div id="tab-rg" style="display:none">
       <div class="fg"><label>الاسم الكامل</label><input type="text" id="rg-n" placeholder="اسمك الكامل"/></div>
-      <div class="fg"><label>البريد الإلكتروني</label><input type="email" id="rg-e" placeholder="example@school.edu"/></div>
+      <div class="fg">
+        <label>رقم الجوال</label>
+        <div class="ph-wrap"><span class="ph-pre">🇸🇦 +966</span><input type="tel" id="rg-ph" placeholder="5XXXXXXXX" maxlength="9"/></div>
+      </div>
       <div class="fg"><label>كلمة المرور</label><input type="password" id="rg-p" placeholder="٦ أحرف على الأقل"/></div>
       <div class="fg"><label>الدور</label><select id="rg-r"><option value="teacher">معلم</option><option value="admin">مدير</option></select></div>
       <button class="btn-m" onclick="doReg()"><span id="rg-t">إنشاء حساب</span></button>
@@ -168,13 +230,13 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
     <div class="nr"><span class="nn" id="t-nm">—</span><span class="nrl">معلم</span><button class="bo" onclick="doOut()">خروج</button></div>
   </nav>
   <div class="wrap">
-    <div class="ph">
+    <div class="ph-hd">
       <h2 id="t-gr">مرحباً 👋</h2>
       <p>ارفع شواهد أدائك للبنود الأحد عشر</p>
       <div class="pb"><div class="pf" id="pf" style="width:0%"></div></div>
-      <div class="pl" id="pl">0 من 11 بند مكتمل</div>
+      <div class="pl" id="pl">0 من 0 شاهد مكتمل</div>
     </div>
-    <div class="el" id="el"></div>
+    <div class="band-list" id="band-list"></div>
   </div>
 </div>
 
@@ -185,7 +247,7 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
     <div class="nr"><span class="nn" id="a-nm">—</span><span class="nrl">مدير</span><button class="bo" onclick="doOut()">خروج</button></div>
   </nav>
   <div class="ww">
-    <div class="ph" style="margin-bottom:1.5rem"><h2>لوحة المدير</h2><p>متابعة شواهد أداء المعلمين</p></div>
+    <div class="ph-hd" style="margin-bottom:1.5rem"><h2>لوحة المدير</h2><p>متابعة شواهد أداء المعلمين</p></div>
     <div class="sts">
       <div class="st"><div class="n" id="s1">0</div><div class="l">إجمالي المعلمين</div></div>
       <div class="st"><div class="n" id="s2">0</div><div class="l">اكتمل ملفهم</div></div>
@@ -200,13 +262,14 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 <div class="ov" id="mup">
   <div class="mo">
     <div class="mh"><h3 id="mtit">رفع شاهد</h3><button class="bx" onclick="closeUp()">✕</button></div>
+    <div class="m-sub" id="msub"></div>
     <div class="dz" id="dz" onclick="document.getElementById('fi').click()">
       <div class="dzi">📁</div>
       <p><strong>اضغط لاختيار ملف</strong> أو اسحبه هنا</p>
-      <p style="margin-top:.3rem;font-size:.74rem;color:#bbb">صور، PDF، Word — حتى 10MB</p>
-      <input type="file" id="fi" accept="image/*,.pdf,.doc,.docx" onchange="onFile(event)"/>
+      <p style="margin-top:.3rem;font-size:.74rem;color:#bbb">صور، PDF، Word | فيديو حتى 20MB</p>
+      <input type="file" id="fi" accept="image/*,.pdf,.doc,.docx,video/*" onchange="onFile(event)"/>
     </div>
-    <div class="pv" id="pv"><img id="pi" src="" alt=""/><div class="fi" id="pfi"></div></div>
+    <div class="pv" id="pv"><img id="pi" src="" alt=""/><div class="pfi" id="pfi"></div></div>
     <div class="mbs">
       <button class="bcl" onclick="closeUp()">إلغاء</button>
       <button class="bup" id="upb" onclick="doUp()">رفع الشاهد</button>
@@ -230,9 +293,51 @@ const BKT='PerfEvl';
 const {createClient}=supabase;
 const sb=createClient(SURL,SKEY);
 
-const BANDS=['خطة الدرس اليومية','سجل المتابعة الطلابية','أنشطة التعلم النشط','التغذية الراجعة للطلاب','استراتيجيات التقويم','التواصل مع أولياء الأمور','التطوير المهني','توظيف التقنية في التعليم','دعم الطلاب ذوي الاحتياجات الخاصة','الأنشطة اللاصفية','التقارير الدورية والنتائج'];
+// ===== البنود الـ 11 مع شواهدها الفرعية =====
+const BANDS=[
+  {title:'أداء الواجبات الوظيفية', weight:'10%', subs:[
+    'سجل الدوام الرسمي','سجل المناوبة والإشراف اليومي','سجل الانتظار','خطة توزيع المنهج'
+  ]},
+  {title:'التفاعل مع المجتمع المهني', weight:'10%', subs:[
+    'سجل مجتمعات التعلم المهنية','سجل تبادل الزيارات','تقرير تنفيذ درس تطبيقي','شهادات حضور الدورات والورش التدريبية'
+  ]},
+  {title:'التفاعل مع أولياء الأمور', weight:'10%', subs:[
+    'صور من الجمعية العمومية لأولياء الأمور والمعلمين','تقرير اجتماع ولي الأمر مع المعلم','نسخة من الخطة الأسبوعية للمدرسة'
+  ]},
+  {title:'التنويع في استراتيجيات التدريس', weight:'10%', subs:[
+    'تقرير عن تطبيق استراتيجية','ملف إنجاز المعلم'
+  ]},
+  {title:'تحسين نتائج المتعلمين', weight:'10%', subs:[
+    'نتائج الاختبار القبلي والبعدي','كشف متابعة الطلاب'
+  ]},
+  {title:'إعداد وتنفيذ خطة التعلم', weight:'10%', subs:[
+    'خطة توزيع المنهج','نموذج من إعداد الدروس','نماذج من الواجبات والاختبارات'
+  ]},
+  {title:'توظيف تقنيات ووسائل التعلم المناسبة', weight:'10%', subs:[
+    'صور من الوسائل التعليمية المستخدمة','تقرير عن برنامج تقني تم استخدامه'
+  ]},
+  {title:'تهيئة البيئة التعليمية', weight:'5%', subs:[
+    'تقرير تصنيف الطلاب وفق أنماط التعلم','نماذج من التحفيز المادي والمعنوي'
+  ]},
+  {title:'الإدارة الصفية', weight:'5%', subs:[
+    'كشف المتابعة','تطبيق إدارة الصف'
+  ]},
+  {title:'تحليل نتائج المتعلمين وتشخيص مستوياتهم', weight:'10%', subs:[
+    'تقرير تحليل نتائج الطلاب','سجل معالجة الفاقد التعليمي'
+  ]},
+  {title:'تنويع أساليب التقويم', weight:'10%', subs:[
+    'نماذج من الاختبارات','نماذج من ملفات إنجاز الطلاب','نماذج من المهام الأدائية ومشاريع الطلاب'
+  ]}
+];
 
-let ME=null,EVS={},SB=null,SF=null,allT=[],allE=[];
+const TOTAL_SUBS = BANDS.reduce((s,b)=>s+b.subs.length,0);
+
+let ME=null, EVS={}, SEL_BAND=null, SEL_SUB=null, SF=null;
+let allT=[], allE=[];
+
+// phone → email تحويل رقم الجوال لإيميل وهمي
+function phoneToEmail(ph){ return `${ph.replace(/\D/g,'')}@perfev.sa`; }
+function cleanPhone(ph){ return ph.replace(/\D/g,'').replace(/^0/,''); }
 
 function go(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
@@ -255,20 +360,21 @@ function msg(m,ok=false){
 function ea(e){
   if(!e)return'';
   const m=e.message||String(e);
-  if(m.includes('rate limit'))return'⚠️ تجاوزت الحد المسموح، انتظر ساعة أو استخدم بريداً آخر';
-  if(m.includes('Invalid login'))return'البريد أو كلمة المرور غير صحيحة';
-  if(m.includes('already registered'))return'هذا البريد مسجل مسبقاً';
-  if(m.includes('Email not confirmed'))return'يرجى تأكيد بريدك الإلكتروني أولاً';
+  if(m.includes('rate limit'))return'⚠️ تجاوزت الحد المسموح، انتظر قليلاً وحاول مجدداً';
+  if(m.includes('Invalid login')||m.includes('invalid_credentials'))return'رقم الجوال أو كلمة المرور غير صحيحة';
+  if(m.includes('already registered'))return'هذا الرقم مسجل مسبقاً';
   if(m.includes('Password'))return'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
   return m;
 }
 
 async function doLogin(){
-  const email=document.getElementById('li-e').value.trim();
+  const ph=cleanPhone(document.getElementById('li-ph').value);
   const pass=document.getElementById('li-p').value;
-  if(!email||!pass)return msg('يرجى ملء جميع الحقول');
+  if(!ph||!pass)return msg('يرجى ملء جميع الحقول');
+  if(ph.length<9)return msg('رقم الجوال يجب أن يكون 9 أرقام');
   const btn=document.getElementById('li-t');
-  btn.innerHTML='<span class="spin"></span>';
+  btn.innerHTML='<span class="spin-sm"></span>';
+  const email=phoneToEmail(ph);
   const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
   btn.textContent='دخول';
   if(error)return msg(ea(error));
@@ -277,20 +383,22 @@ async function doLogin(){
 
 async function doReg(){
   const name=document.getElementById('rg-n').value.trim();
-  const email=document.getElementById('rg-e').value.trim();
+  const ph=cleanPhone(document.getElementById('rg-ph').value);
   const pass=document.getElementById('rg-p').value;
   const role=document.getElementById('rg-r').value;
-  if(!name||!email||!pass)return msg('يرجى ملء جميع الحقول');
+  if(!name||!ph||!pass)return msg('يرجى ملء جميع الحقول');
+  if(ph.length<9)return msg('رقم الجوال يجب أن يكون 9 أرقام');
   if(pass.length<6)return msg('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
   const btn=document.getElementById('rg-t');
-  btn.innerHTML='<span class="spin"></span>';
-  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name,role}}});
+  btn.innerHTML='<span class="spin-sm"></span>';
+  const email=phoneToEmail(ph);
+  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name,role,phone:ph}}});
   btn.textContent='إنشاء حساب';
   if(error)return msg(ea(error));
   if(data.user){
-    await sb.from('profiles').upsert({id:data.user.id,full_name:name,email,role});
+    await sb.from('profiles').upsert({id:data.user.id,full_name:name,phone:ph,role});
     if(data.session){await boot(data.user);}
-    else{msg('✅ تم إنشاء حسابك! تحقق من بريدك وأكد التسجيل ثم سجّل دخولك.',true);showTab('li');}
+    else{msg('✅ تم إنشاء حسابك! سجّل دخولك الآن.',true);showTab('li');}
   }
 }
 
@@ -301,47 +409,79 @@ async function boot(user){
   let p=rows&&rows.length>0?rows[0]:null;
   if(!p){
     const m=user.user_metadata||{};
-    p={id:user.id,full_name:m.full_name||user.email,email:user.email,role:m.role||'teacher'};
+    p={id:user.id,full_name:m.full_name||'مستخدم',phone:m.phone||'',role:m.role||'teacher'};
     await sb.from('profiles').upsert(p);
   }
   ME=p;
+  document.getElementById('page-loading').classList.remove('on');
   if(ME.role==='admin'){
     document.getElementById('a-nm').textContent=ME.full_name;
-    go('admin');
-    loadAdmin();
+    go('admin');loadAdmin();
   }else{
     document.getElementById('t-nm').textContent=ME.full_name;
     document.getElementById('t-gr').textContent=`مرحباً ${ME.full_name} 👋`;
-    go('teacher');
-    loadTeacher();
+    go('teacher');loadTeacher();
   }
 }
 
+// ===== TEACHER =====
 async function loadTeacher(){
   const{data}=await sb.from('evidences').select('*').eq('teacher_id',ME.id);
   EVS={};
-  if(data)data.forEach(e=>EVS[e.band_index]=e);
+  if(data)data.forEach(e=>{ EVS[`${e.band_index}_${e.sub_index}`]=e; });
   renderTeacher();
 }
 
 function renderTeacher(){
-  const c=Object.keys(EVS).length;
-  document.getElementById('pf').style.width=(c/11*100)+'%';
-  document.getElementById('pl').textContent=`${c} من 11 بند مكتمل`;
-  document.getElementById('el').innerHTML=BANDS.map((b,i)=>{
-    const ev=EVS[i];
-    return`<div class="ec ${ev?'done':''}" onclick="openUp(${i})">
-      <div class="en">${ev?'✓':i+1}</div>
-      <div class="ei"><div class="et">${b}</div><div class="es">${ev?ev.file_name:'لم يتم الرفع بعد'}</div></div>
-      <span>${ev?'✅':'○'}</span>
+  const done=Object.keys(EVS).length;
+  document.getElementById('pf').style.width=(done/TOTAL_SUBS*100)+'%';
+  document.getElementById('pl').textContent=`${done} من ${TOTAL_SUBS} شاهد مكتمل`;
+
+  document.getElementById('band-list').innerHTML=BANDS.map((b,bi)=>{
+    const bandDone=b.subs.filter((_,si)=>EVS[`${bi}_${si}`]).length;
+    const isFull=bandDone===b.subs.length;
+    const isPartial=bandDone>0&&!isFull;
+    const cls=isFull?'full':isPartial?'partial':'';
+
+    const subs=b.subs.map((s,si)=>{
+      const ev=EVS[`${bi}_${si}`];
+      return`<div class="sub-item ${ev?'done':''}" onclick="openUp(${bi},${si})">
+        <div class="sub-check">${ev?'✓':''}</div>
+        <div style="flex:1">
+          <div class="sub-name">${s}</div>
+          ${ev?`<div class="sub-file">📎 ${ev.file_name}</div>`:''}
+        </div>
+        <span class="sub-status">${ev?'✅':'رفع'}</span>
+      </div>`;
+    }).join('');
+
+    return`<div class="band-card ${cls}" id="band-${bi}">
+      <div class="band-header" onclick="toggleBand(${bi})">
+        <div class="band-num">${isFull?'✓':bi+1}</div>
+        <div class="band-info">
+          <div class="band-title">${b.title}</div>
+          <div class="band-sub">الوزن النسبي ${b.weight} · ${bandDone}/${b.subs.length} شواهد</div>
+        </div>
+        <div class="band-pill">${bandDone}/${b.subs.length}</div>
+        <div class="band-arrow">▼</div>
+      </div>
+      <div class="sub-list">${subs}</div>
     </div>`;
   }).join('');
 }
 
-function openUp(i){
-  SB=i;SF=null;
-  document.getElementById('mtit').textContent=`بند ${i+1}: ${BANDS[i]}`;
+function toggleBand(bi){
+  const card=document.getElementById('band-'+bi);
+  card.classList.toggle('open');
+}
+
+function openUp(bi,si){
+  SEL_BAND=bi;SEL_SUB=si;SF=null;
+  document.getElementById('mtit').textContent=`بند ${bi+1}: ${BANDS[bi].title}`;
+  document.getElementById('msub').textContent=`الشاهد: ${BANDS[bi].subs[si]}`;
   document.getElementById('pv').classList.remove('show');
+  const oldV=document.getElementById('pv-vid');if(oldV)oldV.remove();
+  const oldW=document.getElementById('pv-warn');if(oldW)oldW.remove();
   document.getElementById('fi').value='';
   document.getElementById('mup').classList.add('open');
 }
@@ -349,18 +489,39 @@ function closeUp(){document.getElementById('mup').classList.remove('open');}
 
 function onFile(e){
   SF=e.target.files[0];if(!SF)return;
-  document.getElementById('pfi').textContent=`${SF.name} — ${(SF.size/1024).toFixed(0)} KB`;
+  const sizeMB=(SF.size/1024/1024).toFixed(1);
   const img=document.getElementById('pi');
-  if(SF.type.startsWith('image/')){img.src=URL.createObjectURL(SF);img.style.display='';}
-  else img.style.display='none';
-  document.getElementById('pv').classList.add('show');
+  const pv=document.getElementById('pv');
+  const oldV=document.getElementById('pv-vid');if(oldV)oldV.remove();
+  const oldW=document.getElementById('pv-warn');if(oldW)oldW.remove();
+  if(SF.type.startsWith('video/')){
+    if(SF.size>20*1024*1024){
+      toast(`⚠️ حجم الفيديو ${sizeMB} MB — الحد الأقصى 20 MB`,'err');
+      SF=null;document.getElementById('fi').value='';return;
+    }
+    if(SF.size>10*1024*1024){
+      const w=document.createElement('div');w.id='pv-warn';
+      w.style.cssText='background:#fff8e1;border:1px solid #f0c040;border-radius:8px;padding:.5rem .8rem;font-size:.78rem;color:#7a5800;margin-bottom:.5rem;text-align:center';
+      w.textContent=`⚠️ حجم الفيديو ${sizeMB} MB — قريب من الحد الأقصى`;
+      pv.insertBefore(w,img);
+    }
+    img.style.display='none';
+    const vid=document.createElement('video');vid.id='pv-vid';
+    vid.src=URL.createObjectURL(SF);vid.controls=true;
+    vid.style.cssText='max-width:100%;max-height:180px;border-radius:9px;margin-bottom:.4rem';
+    pv.insertBefore(vid,img);
+  }else if(SF.type.startsWith('image/')){
+    img.src=URL.createObjectURL(SF);img.style.display='';
+  }else{img.style.display='none';}
+  document.getElementById('pfi').textContent=`${SF.name} — ${sizeMB} MB`;
+  pv.classList.add('show');
 }
 
-const dzel=document.getElementById('dz');
-dzel.addEventListener('dragover',e=>{e.preventDefault();dzel.classList.add('drag');});
-dzel.addEventListener('dragleave',()=>dzel.classList.remove('drag'));
-dzel.addEventListener('drop',e=>{
-  e.preventDefault();dzel.classList.remove('drag');
+const dzEl=document.getElementById('dz');
+dzEl.addEventListener('dragover',e=>{e.preventDefault();dzEl.classList.add('drag');});
+dzEl.addEventListener('dragleave',()=>dzEl.classList.remove('drag'));
+dzEl.addEventListener('drop',e=>{
+  e.preventDefault();dzEl.classList.remove('drag');
   const f=e.dataTransfer.files[0];
   if(f){document.getElementById('fi').files=e.dataTransfer.files;onFile({target:{files:[f]}});}
 });
@@ -368,20 +529,24 @@ dzel.addEventListener('drop',e=>{
 async function doUp(){
   if(!SF)return toast('اختر ملفاً أولاً','err');
   const btn=document.getElementById('upb');
-  btn.innerHTML='<span class="spin"></span> جار الرفع...';btn.disabled=true;
+  btn.innerHTML='<span class="spin-sm"></span> جار الرفع...';btn.disabled=true;
   try{
     const ext=SF.name.split('.').pop();
-    const path=`${ME.id}/${SB}.${ext}`;
+    const path=`${ME.id}/${SEL_BAND}_${SEL_SUB}.${ext}`;
     const{error:e1}=await sb.storage.from(BKT).upload(path,SF,{upsert:true});
     if(e1)throw e1;
     const{data:ud}=sb.storage.from(BKT).getPublicUrl(path);
-    const{error:e2}=await sb.from('evidences').upsert({teacher_id:ME.id,band_index:SB,file_name:SF.name,file_url:ud.publicUrl,file_type:SF.type});
+    const{error:e2}=await sb.from('evidences').upsert({
+      teacher_id:ME.id,band_index:SEL_BAND,sub_index:SEL_SUB,
+      file_name:SF.name,file_url:ud.publicUrl,file_type:SF.type
+    },{onConflict:'teacher_id,band_index,sub_index'});
     if(e2)throw e2;
     closeUp();toast('تم رفع الشاهد بنجاح ✓','ok');loadTeacher();
   }catch(err){toast('خطأ: '+err.message,'err');}
   btn.innerHTML='رفع الشاهد';btn.disabled=false;
 }
 
+// ===== ADMIN =====
 async function loadAdmin(){
   const[{data:t},{data:e}]=await Promise.all([
     sb.from('profiles').select('*').eq('role','teacher'),
@@ -392,45 +557,71 @@ async function loadAdmin(){
 
 function renderAdmin(teachers,evidences){
   const em={};
-  evidences.forEach(e=>{if(!em[e.teacher_id])em[e.teacher_id]={};em[e.teacher_id][e.band_index]=e;});
-  const comp=teachers.filter(t=>Object.keys(em[t.id]||{}).length===11).length;
+  evidences.forEach(e=>{
+    if(!em[e.teacher_id])em[e.teacher_id]={};
+    em[e.teacher_id][`${e.band_index}_${e.sub_index}`]=e;
+  });
+  const comp=teachers.filter(t=>Object.keys(em[t.id]||{}).length===TOTAL_SUBS).length;
   document.getElementById('s1').textContent=teachers.length;
   document.getElementById('s2').textContent=comp;
   document.getElementById('s3').textContent=evidences.length;
-  if(!teachers.length){document.getElementById('tb').innerHTML='<div style="padding:2rem;text-align:center;color:#bbb">لا يوجد معلمون مسجلون بعد</div>';return;}
+
+  if(!teachers.length){
+    document.getElementById('tb').innerHTML='<div style="padding:2rem;text-align:center;color:#bbb">لا يوجد معلمون مسجلون بعد</div>';return;
+  }
+
   document.getElementById('tb').innerHTML=teachers.map(t=>{
     const te=em[t.id]||{};
-    const c=Object.keys(te).length;
+    const cnt=Object.keys(te).length;
+    const pct=Math.round(cnt/TOTAL_SUBS*100);
     const ini=t.full_name.split(' ').map(w=>w[0]).slice(0,2).join('');
-    const dots=BANDS.map((b,i)=>{
-      const ev=te[i];
-      return`<div class="dt ${ev?'on':''}" title="${b}" ${ev?`onclick="event.stopPropagation();showLb('${ev.file_url}','${b}','${ev.file_type||''}')"`:''}>
-        ${i+1}</div>`;
-    }).join('');
-    const detail=BANDS.map((b,i)=>{
-      const ev=te[i];
-      const isImg=ev&&ev.file_type&&ev.file_type.startsWith('image/');
-      return`<div class="di ${ev?'h':''}" ${ev?`onclick="showLb('${ev.file_url}','${b}','${ev.file_type||''}')"`:''}>
-        <div class="dih"><div class="din">${i+1}</div><div class="dim">${b}</div></div>
-        ${ev?(isImg?`<img class="dith" src="${ev.file_url}" loading="lazy"/>`:`<div style="background:#f0fff6;border-radius:5px;padding:.4rem;font-size:.72rem;color:var(--green);text-align:center">📄 ${ev.file_name}</div>`):`<div class="dino">لم يرفع بعد</div>`}
+
+    const bandsHtml=BANDS.map((b,bi)=>{
+      const bandDone=b.subs.filter((_,si)=>te[`${bi}_${si}`]).length;
+      const allDone=bandDone===b.subs.length;
+      const someDone=bandDone>0&&!allDone;
+      const hdCls=allDone?'has-all':someDone?'has-some':'';
+      const subsHtml=b.subs.map((s,si)=>{
+        const ev=te[`${bi}_${si}`];
+        return`<div class="adm-sub-item ${ev?'has':''}" ${ev?`onclick="showLb('${ev.file_url}','${s}','${ev.file_type||''}')"`:''}>
+          <div class="adm-sub-dot"></div>
+          <div class="adm-sub-name">${s}</div>
+          ${ev?`<span class="adm-sub-file">${ev.file_type&&ev.file_type.startsWith('video/')?'🎬':'📄'} ${ev.file_name}</span>`:''}
+        </div>`;
+      }).join('');
+      return`<div class="adm-band" id="ab-${t.id}-${bi}">
+        <div class="adm-band-hd ${hdCls}" onclick="toggleAB('ab-${t.id}-${bi}')">
+          <div class="adm-band-num">${bi+1}</div>
+          <span style="flex:1">${b.title}</span>
+          <span style="font-size:.72rem;color:#999">${bandDone}/${b.subs.length}</span>
+        </div>
+        <div class="adm-sub-list">${subsHtml}</div>
       </div>`;
     }).join('');
-    return`<div class="tr" onclick="toggleD('d${t.id}')">
+
+    return`<div class="tr" onclick="toggleD('d-${t.id}')">
       <div class="trt">
         <div class="av">${ini}</div>
-        <div class="tm"><div class="tn">${t.full_name}</div><div class="te">${t.email}</div></div>
-        <div class="pi ${c===11?'f':''}">${c}/11</div>
+        <div class="tm">
+          <div class="tn">${t.full_name}</div>
+          <div class="te">📱 ${t.phone||'—'}</div>
+        </div>
+        <div class="pi ${cnt===TOTAL_SUBS?'f':''}">${cnt}/${TOTAL_SUBS}</div>
       </div>
-      <div class="dts">${dots}</div>
-      <div class="dl" id="d${t.id}"><div class="dg">${detail}</div></div>
+      <div class="mini-bar"><div class="mini-fill" style="width:${pct}%"></div></div>
+      <div class="dl" id="d-${t.id}">${bandsHtml}</div>
     </div>`;
   }).join('');
 }
 
 function toggleD(id){document.getElementById(id)?.classList.toggle('open');}
+function toggleAB(id){
+  event.stopPropagation();
+  document.getElementById(id)?.classList.toggle('open');
+}
 function filterT(){
   const q=document.getElementById('srch').value.toLowerCase();
-  renderAdmin(allT.filter(t=>t.full_name.toLowerCase().includes(q)||t.email.toLowerCase().includes(q)),allE);
+  renderAdmin(allT.filter(t=>t.full_name.toLowerCase().includes(q)||(t.phone||'').includes(q)),allE);
 }
 
 function showLb(url,name,type){
@@ -444,12 +635,18 @@ function closeLb(){document.getElementById('lb').classList.remove('open');}
 function toast(m,type=''){
   const t=document.getElementById('toast');
   t.textContent=m;t.className='toast show '+type;
-  setTimeout(()=>t.className='toast',3000);
+  setTimeout(()=>t.className='toast',3500);
 }
 
+// ===== INIT =====
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
-  if(session?.user)await boot(session.user);
+  if(session?.user){
+    await boot(session.user);
+  }else{
+    document.getElementById('page-loading').classList.remove('on');
+    go('auth');
+  }
 })();
 </script>
 </body>
