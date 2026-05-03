@@ -216,7 +216,11 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
         <div class="ph-wrap"><span class="ph-pre">🇸🇦 +966</span><input type="tel" id="rg-ph" placeholder="5XXXXXXXX" maxlength="9"/></div>
       </div>
       <div class="fg"><label>كلمة المرور</label><input type="password" id="rg-p" placeholder="٦ أحرف على الأقل"/></div>
-      <div class="fg"><label>الدور</label><select id="rg-r"><option value="teacher">معلم</option><option value="admin">مدير</option></select></div>
+      <div class="fg"><label>الدور</label><select id="rg-r" onchange="toggleAdminCode()"><option value="teacher">معلم</option><option value="admin">مدير</option></select></div>
+      <div class="fg" id="admin-code-wrap" style="display:none">
+        <label>رمز المدير السري</label>
+        <input type="password" id="rg-code" placeholder="أدخل الرمز السري"/>
+      </div>
       <button class="btn-m" onclick="doReg()"><span id="rg-t">إنشاء حساب</span></button>
     </div>
     <div class="amsg" id="amsg"></div>
@@ -351,6 +355,12 @@ function showTab(t){
   msg('');
 }
 
+function toggleAdminCode(){
+  const role = document.getElementById('rg-r').value;
+  document.getElementById('admin-code-wrap').style.display = role === 'admin' ? '' : 'none';
+  document.getElementById('rg-code').value = '';
+}
+
 function msg(m,ok=false){
   const e=document.getElementById('amsg');
   e.textContent=m;
@@ -387,6 +397,11 @@ async function doReg(){
   const pass=document.getElementById('rg-p').value;
   const role=document.getElementById('rg-r').value;
   if(!name||!ph||!pass)return msg('يرجى ملء جميع الحقول');
+  if(role==='admin'){
+    const code=document.getElementById('rg-code').value;
+    if(!code)return msg('يرجى إدخال رمز المدير السري');
+    if(code!=='Boss21426')return msg('رمز المدير السري غير صحيح');
+  }
   if(ph.length<9)return msg('رقم الجوال يجب أن يكون 9 أرقام');
   if(pass.length<6)return msg('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
   const btn=document.getElementById('rg-t');
@@ -648,6 +663,28 @@ function toast(m,type=''){
     go('auth');
   }
 })();
+</script>
+<style>
+.footer{text-align:center;padding:1.5rem;margin-top:1rem}
+.tiktok-btn{display:inline-flex;align-items:center;gap:.6rem;background:#000;color:#fff;padding:.6rem 1.2rem;border-radius:25px;text-decoration:none;font-family:'Cairo',sans-serif;font-size:.85rem;font-weight:700;transition:all .2s;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.tiktok-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.tiktok-icon{width:20px;height:20px}
+</style>
+<div class="footer" id="site-footer" style="display:none">
+  <a class="tiktok-btn" href="https://www.tiktok.com/@raa.file" target="_blank">
+    <svg class="tiktok-icon" viewBox="0 0 24 24" fill="white">
+      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
+    </svg>
+    @raa.file
+  </a>
+</div>
+<script>
+// أظهر الفوتر فقط في صفحة المعلم والمدير
+const _origGo = go;
+go = function(p){
+  _origGo(p);
+  document.getElementById('site-footer').style.display = p === 'auth' || p === 'loading' ? 'none' : 'block';
+};
 </script>
 </body>
 </html>
