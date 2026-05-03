@@ -603,13 +603,13 @@ function renderAdmin(teachers,evidences,reviews){
             ${ev?`<span class="adm-sub-file" onclick="showLb('${ev.file_url}','${s}','${ev.file_type||''}')">📄 ${ev.file_name}</span>`:''}
             ${statusLabel}
           </div>
-          ${ev?`<div class="review-area">
+          ${ev?`<div class="review-area" onclick="event.stopPropagation()">
             <div class="review-btns">
               <button class="rbtn accept ${rv&&rv.status==='accepted'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'accepted',this)">✅ مقبول</button>
               <button class="rbtn reject ${rv&&rv.status==='rejected'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'rejected',this)">❌ مرفوض</button>
               <button class="rbtn edit ${rv&&rv.status==='needs_edit'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'needs_edit',this)">⚠️ يحتاج تعديل</button>
             </div>
-            <textarea class="note-input" id="note-${t.id}-${bi}-${si}" placeholder="ملاحظة للمعلم (اختياري)...">${rv&&rv.note?rv.note:''}</textarea>
+            <textarea class="note-input" onclick="event.stopPropagation()" id="note-${t.id}-${bi}-${si}" placeholder="ملاحظة للمعلم (اختياري)...">${rv&&rv.note?rv.note:''}</textarea>
             <button class="save-review-btn" onclick="saveReview('${t.id}',${bi},${si})">💾 حفظ التقييم</button>
           </div>`:''}
         </div>`;
