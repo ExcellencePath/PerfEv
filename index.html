@@ -9,17 +9,16 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--ink:#0d1117;--paper:#f5f0e8;--cream:#ede8da;--gold:#c9933a;--teal:#1a6b5c;--teal2:#2a8a76;--red:#c0392b;--green:#1e7e48;--sh:rgba(13,17,23,0.12)}
-body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh}
+body{font-family:"Cairo",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh}
 .page{display:none!important}.page.on{display:block!important}
 #page-auth.on{display:flex!important}
 #page-loading.on{display:flex!important}
 
-/* LOADING */
 #page-loading{align-items:center;justify-content:center;flex-direction:column;gap:1rem;position:fixed;inset:0;background:var(--paper);z-index:999;min-height:100vh}
 .ld-icon{width:60px;height:60px;background:linear-gradient(135deg,var(--teal),var(--gold));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.7rem}
-.ld-title{font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:900}
+.ld-title{font-family:"Tajawal",sans-serif;font-size:1.1rem;font-weight:900}
 .spin{display:inline-block;width:32px;height:32px;border:3px solid var(--cream);border-top-color:var(--teal);border-radius:50%;animation:sp .7s linear infinite}
-.spin-sm{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+.spin-sm{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 
 /* AUTH */
@@ -27,20 +26,25 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 .auth-box{background:#fff;border-radius:20px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 20px 60px var(--sh)}
 .auth-logo{text-align:center;margin-bottom:2rem}
 .auth-icon{width:60px;height:60px;background:linear-gradient(135deg,var(--teal),var(--gold));border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:.8rem}
-.auth-logo h1{font-family:'Tajawal',sans-serif;font-size:1.5rem;font-weight:900}
+.auth-logo h1{font-family:"Tajawal",sans-serif;font-size:1.5rem;font-weight:900}
 .auth-logo p{font-size:.82rem;color:#888;margin-top:.2rem}
 .tabs{display:flex;background:var(--cream);border-radius:10px;padding:4px;margin-bottom:1.5rem}
-.tabs button{flex:1;padding:.55rem;border:none;background:transparent;border-radius:7px;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;color:#888;transition:all .2s}
+.tabs button{flex:1;padding:.55rem;border:none;background:transparent;border-radius:7px;font-family:"Cairo",sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;color:#888;transition:all .2s}
 .tabs button.on{background:#fff;color:var(--teal);box-shadow:0 2px 8px var(--sh)}
-.fg{margin-bottom:1rem}
+.fg{margin-bottom:1rem;position:relative}
 .fg label{display:block;font-size:.82rem;font-weight:600;color:#555;margin-bottom:.35rem}
 .ph-wrap{display:flex;border:1.5px solid #e0ddd6;border-radius:10px;overflow:hidden;background:#fafaf8;transition:border-color .2s}
 .ph-wrap:focus-within{border-color:var(--teal);background:#fff}
 .ph-pre{padding:.7rem .8rem;background:var(--cream);font-size:.88rem;font-weight:700;color:#555;border-left:1.5px solid #e0ddd6;white-space:nowrap}
-.ph-wrap input{flex:1;padding:.7rem .8rem;border:none;background:transparent;font-family:'Cairo',sans-serif;font-size:.92rem;color:var(--ink);outline:none;direction:ltr;text-align:left}
-.fg input,.fg select{width:100%;padding:.7rem 1rem;border:1.5px solid #e0ddd6;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.92rem;background:#fafaf8;color:var(--ink);outline:none;transition:border-color .2s}
+.ph-wrap input{flex:1;padding:.7rem .8rem;border:none;background:transparent;font-family:"Cairo",sans-serif;font-size:.92rem;color:var(--ink);outline:none;direction:ltr;text-align:left}
+.pw-wrap{position:relative}
+.pw-wrap input{width:100%;padding:.7rem 2.8rem .7rem 1rem;border:1.5px solid #e0ddd6;border-radius:10px;font-family:"Cairo",sans-serif;font-size:.92rem;background:#fafaf8;color:var(--ink);outline:none;transition:border-color .2s}
+.pw-wrap input:focus{border-color:var(--teal);background:#fff}
+.eye-btn{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;font-size:1.1rem;padding:.2rem;line-height:1}
+.eye-btn:hover{color:var(--teal)}
+.fg input,.fg select{width:100%;padding:.7rem 1rem;border:1.5px solid #e0ddd6;border-radius:10px;font-family:"Cairo",sans-serif;font-size:.92rem;background:#fafaf8;color:var(--ink);outline:none;transition:border-color .2s}
 .fg input:focus,.fg select:focus{border-color:var(--teal);background:#fff}
-.btn-m{width:100%;padding:.8rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.4rem;box-shadow:0 4px 14px rgba(26,107,92,.28);transition:all .2s}
+.btn-m{width:100%;padding:.8rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:10px;font-family:"Cairo",sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.4rem;box-shadow:0 4px 14px rgba(26,107,92,.28);transition:all .2s}
 .btn-m:hover{transform:translateY(-1px)}
 .amsg{text-align:center;font-size:.82rem;margin-top:.8rem;min-height:1rem;padding:.5rem;border-radius:8px}
 .amsg.err{color:var(--red)}.amsg.ok{color:var(--green);background:#f0fff6;border:1px solid #b7f0d0}
@@ -49,29 +53,28 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 .nav{background:var(--ink);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;position:sticky;top:0;z-index:50}
 .nb{display:flex;align-items:center;gap:.6rem;color:#fff}
 .nd{width:9px;height:9px;background:var(--gold);border-radius:50%}
-.nb span{font-family:'Tajawal',sans-serif;font-weight:900;font-size:1rem}
+.nb span{font-family:"Tajawal",sans-serif;font-weight:900;font-size:1rem}
 .nr{display:flex;align-items:center;gap:.8rem}
-.nn{background:rgba(255,255,255,.1);color:#fff;padding:.3rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600}
+.nn{background:rgba(255,255,255,.1);color:#888;padding:.3rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600}
 .nrl{background:var(--gold);color:var(--ink);padding:.2rem .65rem;border-radius:20px;font-size:.72rem;font-weight:700}
-.bo{background:rgba(255,255,255,.08);color:#aaa;border:1px solid rgba(255,255,255,.1);padding:.3rem .7rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.78rem;cursor:pointer}
+.bo{background:rgba(255,255,255,.08);color:#aaa;border:1px solid rgba(255,255,255,.1);padding:.3rem .7rem;border-radius:8px;font-family:"Cairo",sans-serif;font-size:.78rem;cursor:pointer}
 .bo:hover{background:rgba(255,255,255,.15);color:#fff}
 
 /* TEACHER */
 .wrap{max-width:860px;margin:0 auto;padding:2rem 1.5rem}
-.ph-hd h2{font-family:'Tajawal',sans-serif;font-size:1.7rem;font-weight:900}
+.ph-hd h2{font-family:"Tajawal",sans-serif;font-size:1.7rem;font-weight:900}
 .ph-hd p{color:#777;font-size:.88rem;margin-top:.2rem}
 .pb{background:var(--cream);border-radius:30px;height:8px;margin-top:.9rem;overflow:hidden}
 .pf{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:30px;transition:width .5s}
 .pl{font-size:.78rem;color:#999;margin-top:.35rem}
 
-/* BAND CARDS */
 .band-list{margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem}
-.band-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px var(--sh);overflow:hidden;border:2px solid transparent;transition:border-color .2s}
+.band-card{background:#fff;border-radius:14px;box-shadow:0 2px 10px var(--sh);overflow:hidden;border:2px solid transparent;transition:all .2s}
 .band-card.partial{border-color:var(--gold)}
 .band-card.full{border-color:var(--green)}
 .band-header{padding:1rem 1.2rem;display:flex;align-items:center;gap:.9rem;cursor:pointer}
 .band-header:hover{background:#fafaf8}
-.band-num{width:38px;height:38px;border-radius:9px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:900;color:#999;flex-shrink:0}
+.band-num{width:38px;height:38px;border-radius:9px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-family:"Tajawal",sans-serif;font-size:.95rem;font-weight:900;color:#999;flex-shrink:0}
 .band-card.full .band-num{background:var(--green);color:#fff}
 .band-card.partial .band-num{background:var(--gold);color:#fff}
 .band-info{flex:1}
@@ -82,33 +85,50 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 .band-card.partial .band-pill{background:#fff3dc;color:#a06010}
 .band-arrow{font-size:.8rem;color:#ccc;transition:transform .2s}
 .band-card.open .band-arrow{transform:rotate(180deg)}
-
-/* SUB EVIDENCES */
 .sub-list{border-top:1px solid var(--cream);padding:.8rem 1rem;display:none;flex-direction:column;gap:.6rem}
 .band-card.open .sub-list{display:flex}
 .sub-item{display:flex;align-items:center;gap:.8rem;padding:.7rem .9rem;border-radius:10px;border:1.5px solid var(--cream);background:#fafaf8;cursor:pointer;transition:all .2s}
 .sub-item:hover{border-color:var(--teal);background:#f0fff8}
 .sub-item.done{border-color:var(--green);background:linear-gradient(135deg,#fff,#f0fff6)}
-.sub-check{width:28px;height:28px;border-radius:7px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0}
-.sub-item.done .sub-check{background:var(--green);color:#fff}
+.sub-item.rejected{border-color:var(--red);background:#fff5f5}
+.sub-item.needs-edit{border-color:var(--gold);background:#fffbf0}
+.sub-check{width:28px;height:28px;border-radius:7px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;color:#fff}
+.sub-item.done .sub-check{background:var(--green)}
+.sub-item.rejected .sub-check{background:var(--red)}
+.sub-item.needs-edit .sub-check{background:var(--gold)}
 .sub-name{flex:1;font-size:.85rem;font-weight:600}
 .sub-file{font-size:.72rem;color:#999;margin-top:.1rem}
+.sub-feedback{font-size:.72rem;margin-top:.2rem;padding:.2rem .5rem;border-radius:5px;display:inline-block}
+.sub-feedback.rejected{background:#ffeaea;color:var(--red)}
+.sub-feedback.needs-edit{background:#fff3dc;color:#a06010}
 .sub-status{font-size:.8rem;color:#ccc}
 .sub-item.done .sub-status{color:var(--green)}
 
 /* MODAL */
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(3px)}
 .ov.open{display:flex!important}
-.mo{background:#fff;border-radius:18px;padding:1.8rem;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:up .22s ease}
+.mo{background:#fff;border-radius:18px;padding:1.8rem;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;animation:up .22s ease}
 @keyframes up{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
 .mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
-.mh h3{font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:900}
-.m-sub{font-size:.8rem;color:#888;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1px solid var(--cream)}
+.mh h3{font-family:"Tajawal",sans-serif;font-size:1.1rem;font-weight:900}
+.m-sub{font-size:.8rem;color:#888;margin-bottom:1rem;padding-bottom:.8rem;border-bottom:1px solid var(--cream)}
 .bx{width:30px;height:30px;border-radius:7px;border:none;background:var(--cream);font-size:1rem;cursor:pointer}
-.dz{border:2px dashed #d0ccc4;border-radius:12px;padding:2rem 1.2rem;text-align:center;cursor:pointer;background:var(--paper);margin-bottom:1rem;transition:all .2s}
+
+/* FILE PREVIEW IN MODAL */
+.file-preview-area{margin-bottom:1rem}
+.current-file{background:#f0fff6;border:1.5px solid var(--green);border-radius:10px;padding:.8rem 1rem;display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem}
+.current-file img{width:60px;height:60px;object-fit:cover;border-radius:7px;flex-shrink:0}
+.current-file .cf-info{flex:1}
+.cf-name-input{width:100%;border:1px solid #e0ddd6;border-radius:6px;padding:.4rem .6rem;font-family:"Cairo",sans-serif;font-size:.82rem;margin-top:.3rem;background:#fff}
+.cf-name-input:focus{outline:none;border-color:var(--teal)}
+.cf-actions{display:flex;gap:.5rem;margin-top:.5rem}
+.cf-del{background:#ffeaea;color:var(--red);border:none;border-radius:6px;padding:.3rem .7rem;font-family:"Cairo",sans-serif;font-size:.75rem;cursor:pointer;font-weight:600}
+.cf-del:hover{background:#ffd6d6}
+
+.dz{border:2px dashed #d0ccc4;border-radius:12px;padding:1.8rem 1.2rem;text-align:center;cursor:pointer;background:var(--paper);margin-bottom:1rem;transition:all .2s}
 .dz:hover,.dz.drag{border-color:var(--teal);background:#f0fff8}
 .dz input{display:none}
-.dzi{font-size:2.2rem;margin-bottom:.5rem}
+.dzi{font-size:2rem;margin-bottom:.5rem}
 .dz p{font-size:.84rem;color:#777}
 .dz strong{color:var(--teal)}
 .pv{display:none;margin-bottom:1rem;text-align:center}
@@ -116,52 +136,65 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 .pv .pfi{font-size:.78rem;color:#999;margin-top:.4rem}
 .pv.show{display:block}
 .mbs{display:flex;gap:.7rem}
-.bcl{flex:1;padding:.7rem;border:1.5px solid #e0ddd6;border-radius:9px;background:transparent;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;color:#777}
-.bup{flex:2;padding:.7rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:9px;font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer}
+.bcl{flex:1;padding:.7rem;border:1.5px solid #e0ddd6;border-radius:9px;background:transparent;font-family:"Cairo",sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;color:#777}
+.bup{flex:2;padding:.7rem;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:9px;font-family:"Cairo",sans-serif;font-size:.9rem;font-weight:700;cursor:pointer}
 .bup:disabled{opacity:.5;cursor:not-allowed}
 
 /* ADMIN */
 .ww{max-width:1080px;margin:0 auto;padding:2rem 1.5rem}
 .sts{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
 .st{background:#fff;border-radius:13px;padding:1.1rem 1.3rem;box-shadow:0 2px 10px var(--sh);border-right:4px solid var(--gold)}
-.st .n{font-family:'Tajawal',sans-serif;font-size:2rem;font-weight:900;color:var(--teal);line-height:1}
+.st .n{font-family:"Tajawal",sans-serif;font-size:2rem;font-weight:900;color:var(--teal);line-height:1}
 .st .l{font-size:.8rem;color:#999;margin-top:.25rem}
 .sb{background:#fff;border-radius:11px;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;box-shadow:0 2px 8px var(--sh);margin-bottom:1.2rem}
-.sb input{flex:1;border:none;background:transparent;font-family:'Cairo',sans-serif;font-size:.92rem;outline:none}
+.sb input{flex:1;border:none;background:transparent;font-family:"Cairo",sans-serif;font-size:.92rem;outline:none}
 .tb{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 2px 14px var(--sh)}
 .tr{padding:1.1rem 1.3rem;border-bottom:1px solid var(--cream);cursor:pointer}
 .tr:last-child{border-bottom:none}
 .tr:hover{background:#fafaf8}
 .trt{display:flex;align-items:center;gap:.9rem}
-.av{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--teal),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Tajawal',sans-serif;font-weight:900;color:#fff;font-size:1rem;flex-shrink:0}
+.av{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--teal),var(--gold));display:flex;align-items:center;justify-content:center;font-family:"Tajawal",sans-serif;font-weight:900;color:#fff;font-size:1rem;flex-shrink:0}
 .tm{flex:1}
 .tn{font-weight:700;font-size:.92rem}
 .te{font-size:.75rem;color:#999;margin-top:.1rem}
 .pi{background:var(--cream);padding:.25rem .7rem;border-radius:20px;font-size:.78rem;font-weight:700;color:#999}
 .pi.f{background:#d4f5e3;color:var(--green)}
-/* progress mini bar */
 .mini-bar{height:5px;background:var(--cream);border-radius:10px;margin-top:.6rem;overflow:hidden}
 .mini-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:10px;transition:width .4s}
 .dl{display:none;margin-top:.9rem;background:var(--paper);border-radius:11px;border:1px solid var(--cream);overflow:hidden}
 .dl.open{display:block}
-/* admin band accordion */
 .adm-band{border-bottom:1px solid var(--cream)}
 .adm-band:last-child{border-bottom:none}
 .adm-band-hd{padding:.7rem 1rem;display:flex;align-items:center;gap:.7rem;cursor:pointer;font-size:.85rem;font-weight:700}
-.adm-band-hd:hover{background:#f5f5f0}
+.adm-band-hd:hover{background:#fafaf8}
 .adm-band-num{width:24px;height:24px;border-radius:6px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;color:#999;flex-shrink:0}
 .adm-band-hd.has-all .adm-band-num{background:var(--green);color:#fff}
 .adm-band-hd.has-some .adm-band-num{background:var(--gold);color:#fff}
 .adm-sub-list{display:none;padding:.5rem .8rem;background:#fff}
 .adm-band.open .adm-sub-list{display:block}
-.adm-sub-item{display:flex;align-items:center;gap:.6rem;padding:.4rem .5rem;border-radius:7px;margin-bottom:.3rem;font-size:.78rem}
-.adm-sub-item.has{cursor:pointer}
-.adm-sub-item.has:hover{background:#f0fff8}
+.adm-sub-item{border:1.5px solid var(--cream);border-radius:9px;padding:.6rem .8rem;margin-bottom:.5rem;background:#fafaf8}
+.adm-sub-item.has{border-color:#c8e6c9}
+.adm-sub-top{display:flex;align-items:center;gap:.6rem}
 .adm-sub-dot{width:10px;height:10px;border-radius:50%;background:var(--cream);flex-shrink:0}
 .adm-sub-item.has .adm-sub-dot{background:var(--green)}
-.adm-sub-name{flex:1;color:#555}
+.adm-sub-name{flex:1;font-size:.8rem;color:#777}
 .adm-sub-item.has .adm-sub-name{color:var(--ink);font-weight:600}
-.adm-sub-file{font-size:.7rem;color:#aaa}
+.adm-sub-file{font-size:.72rem;color:#aaa;cursor:pointer}
+.adm-sub-file:hover{color:var(--teal)}
+
+/* ADMIN REVIEW */
+.review-area{margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--cream)}
+.review-btns{display:flex;gap:.4rem;margin-bottom:.5rem;flex-wrap:wrap}
+.rbtn{padding:.3rem .7rem;border-radius:6px;border:1.5px solid;font-family:"Cairo",sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.rbtn.accept{border-color:var(--green);color:var(--green);background:transparent}
+.rbtn.accept.active{background:var(--green);color:#fff}
+.rbtn.reject{border-color:var(--red);color:var(--red);background:transparent}
+.rbtn.reject.active{background:var(--red);color:#fff}
+.rbtn.edit{border-color:var(--gold);color:var(--gold);background:transparent}
+.rbtn.edit.active{background:var(--gold);color:#fff}
+.note-input{width:100%;border:1.5px solid #e0ddd6;border-radius:7px;padding:.4rem .7rem;font-family:"Cairo",sans-serif;font-size:.78rem;resize:none;height:56px;outline:none}
+.note-input:focus{border-color:var(--teal)}
+.save-review-btn{margin-top:.4rem;padding:.35rem .9rem;background:var(--teal);color:#fff;border:none;border-radius:7px;font-family:"Cairo",sans-serif;font-size:.75rem;font-weight:700;cursor:pointer}
 
 /* LIGHTBOX */
 .lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:.8rem}
@@ -170,24 +203,20 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
 .lbc{color:#fff;font-size:.88rem;opacity:.7}
 .lbx{position:absolute;top:1.2rem;left:1.2rem;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:1.4rem;width:40px;height:40px;border-radius:9px;cursor:pointer}
 
-/* TOAST */
 .toast{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:.65rem 1.3rem;border-radius:25px;font-size:.85rem;font-weight:600;z-index:300;transition:transform .28s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.ok{background:var(--green)}.toast.err{background:var(--red)}
-
 @media(max-width:600px){.sts{grid-template-columns:1fr 1fr}.sts .st:last-child{grid-column:span 2}.wrap,.ww{padding:1rem}}
 </style>
 </head>
 <body>
 
-<!-- LOADING -->
 <div id="page-loading" class="page on">
   <div class="ld-icon">📋</div>
   <div class="ld-title">منصة شواهد الأداء</div>
   <div class="spin"></div>
 </div>
 
-<!-- AUTH -->
 <div id="page-auth" class="page">
   <div class="auth-box">
     <div class="auth-logo">
@@ -199,35 +228,40 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
       <button class="on" onclick="showTab('li')">تسجيل الدخول</button>
       <button onclick="showTab('rg')">حساب جديد</button>
     </div>
-    <!-- LOGIN -->
     <div id="tab-li">
       <div class="fg">
         <label>رقم الجوال</label>
-        <div class="ph-wrap"><span class="ph-pre">🇸🇦 +966</span><input type="tel" id="li-ph" placeholder="5XXXXXXXX" maxlength="9"/></div>
+        <div class="ph-wrap"><span class="ph-pre">🇸🇦 +966</span><input type="tel" id="li-ph" placeholder="5XXXXXXXX" maxlength="9" inputmode="numeric"/></div>
       </div>
-      <div class="fg"><label>كلمة المرور</label><input type="password" id="li-p" placeholder="••••••••"/></div>
+      <div class="fg">
+        <label>كلمة المرور</label>
+        <div class="pw-wrap">
+          <input type="password" id="li-p" placeholder="••••••••"/>
+          <button class="eye-btn" type="button" onclick="toggleEye('li-p',this)">👁</button>
+        </div>
+      </div>
       <button class="btn-m" onclick="doLogin()"><span id="li-t">دخول</span></button>
     </div>
-    <!-- REGISTER -->
     <div id="tab-rg" style="display:none">
       <div class="fg"><label>الاسم الكامل</label><input type="text" id="rg-n" placeholder="اسمك الكامل"/></div>
       <div class="fg">
         <label>رقم الجوال</label>
-        <div class="ph-wrap"><span class="ph-pre">🇸🇦 +966</span><input type="tel" id="rg-ph" placeholder="5XXXXXXXX" maxlength="9"/></div>
+        <div class="ph-wrap"><span class="ph-pre">🇸🇦 +966</span><input type="tel" id="rg-ph" placeholder="5XXXXXXXX" maxlength="9" inputmode="numeric"/></div>
       </div>
-      <div class="fg"><label>كلمة المرور</label><input type="password" id="rg-p" placeholder="٦ أحرف على الأقل"/></div>
-      <div class="fg"><label>الدور</label><select id="rg-r" onchange="toggleAdminCode()"><option value="teacher">معلم</option><option value="admin">مدير</option></select></div>
-      <div class="fg" id="admin-code-wrap" style="display:none">
-        <label>رمز المدير السري</label>
-        <input type="password" id="rg-code" placeholder="أدخل الرمز السري"/>
+      <div class="fg">
+        <label>كلمة المرور</label>
+        <div class="pw-wrap">
+          <input type="password" id="rg-p" placeholder="٦ أحرف على الأقل"/>
+          <button class="eye-btn" type="button" onclick="toggleEye('rg-p',this)">👁</button>
+        </div>
       </div>
+      <div class="fg"><label>الدور</label><select id="rg-r"><option value="teacher">معلم</option><option value="admin">مدير</option></select></div>
       <button class="btn-m" onclick="doReg()"><span id="rg-t">إنشاء حساب</span></button>
     </div>
     <div class="amsg" id="amsg"></div>
   </div>
 </div>
 
-<!-- TEACHER PAGE -->
 <div id="page-teacher" class="page">
   <nav class="nav">
     <div class="nb"><div class="nd"></div><span>شواهد الأداء</span></div>
@@ -238,13 +272,12 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
       <h2 id="t-gr">مرحباً 👋</h2>
       <p>ارفع شواهد أدائك للبنود الأحد عشر</p>
       <div class="pb"><div class="pf" id="pf" style="width:0%"></div></div>
-      <div class="pl" id="pl">0 من 0 شاهد مكتمل</div>
+      <div class="pl" id="pl">0 من 29</div>
     </div>
     <div class="band-list" id="band-list"></div>
   </div>
 </div>
 
-<!-- ADMIN PAGE -->
 <div id="page-admin" class="page">
   <nav class="nav">
     <div class="nb"><div class="nd"></div><span>شواهد الأداء</span></div>
@@ -262,11 +295,11 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
   </div>
 </div>
 
-<!-- UPLOAD MODAL -->
 <div class="ov" id="mup">
   <div class="mo">
     <div class="mh"><h3 id="mtit">رفع شاهد</h3><button class="bx" onclick="closeUp()">✕</button></div>
     <div class="m-sub" id="msub"></div>
+    <div class="file-preview-area" id="fpa"></div>
     <div class="dz" id="dz" onclick="document.getElementById('fi').click()">
       <div class="dzi">📁</div>
       <p><strong>اضغط لاختيار ملف</strong> أو اسحبه هنا</p>
@@ -281,13 +314,11 @@ body{font-family:'Cairo',sans-serif;background:var(--paper);color:var(--ink);min
   </div>
 </div>
 
-<!-- LIGHTBOX -->
 <div class="lb" id="lb" onclick="closeLb()">
   <button class="lbx">✕</button>
   <img id="lbi" src="" alt=""/>
   <div class="lbc" id="lbc"></div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -297,55 +328,31 @@ const BKT='PerfEv';
 const {createClient}=supabase;
 const sb=createClient(SURL,SKEY);
 
-// ===== البنود الـ 11 مع شواهدها الفرعية =====
 const BANDS=[
-  {title:'أداء الواجبات الوظيفية', weight:'10%', subs:[
-    'سجل الدوام الرسمي','سجل المناوبة والإشراف اليومي','سجل الانتظار','خطة توزيع المنهج'
-  ]},
-  {title:'التفاعل مع المجتمع المهني', weight:'10%', subs:[
-    'سجل مجتمعات التعلم المهنية','سجل تبادل الزيارات','تقرير تنفيذ درس تطبيقي','شهادات حضور الدورات والورش التدريبية'
-  ]},
-  {title:'التفاعل مع أولياء الأمور', weight:'10%', subs:[
-    'صور من الجمعية العمومية لأولياء الأمور والمعلمين','تقرير اجتماع ولي الأمر مع المعلم','نسخة من الخطة الأسبوعية للمدرسة'
-  ]},
-  {title:'التنويع في استراتيجيات التدريس', weight:'10%', subs:[
-    'تقرير عن تطبيق استراتيجية','ملف إنجاز المعلم'
-  ]},
-  {title:'تحسين نتائج المتعلمين', weight:'10%', subs:[
-    'نتائج الاختبار القبلي والبعدي','كشف متابعة الطلاب'
-  ]},
-  {title:'إعداد وتنفيذ خطة التعلم', weight:'10%', subs:[
-    'خطة توزيع المنهج','نموذج من إعداد الدروس','نماذج من الواجبات والاختبارات'
-  ]},
-  {title:'توظيف تقنيات ووسائل التعلم المناسبة', weight:'10%', subs:[
-    'صور من الوسائل التعليمية المستخدمة','تقرير عن برنامج تقني تم استخدامه'
-  ]},
-  {title:'تهيئة البيئة التعليمية', weight:'5%', subs:[
-    'تقرير تصنيف الطلاب وفق أنماط التعلم','نماذج من التحفيز المادي والمعنوي'
-  ]},
-  {title:'الإدارة الصفية', weight:'5%', subs:[
-    'كشف المتابعة','تطبيق إدارة الصف'
-  ]},
-  {title:'تحليل نتائج المتعلمين وتشخيص مستوياتهم', weight:'10%', subs:[
-    'تقرير تحليل نتائج الطلاب','سجل معالجة الفاقد التعليمي'
-  ]},
-  {title:'تنويع أساليب التقويم', weight:'10%', subs:[
-    'نماذج من الاختبارات','نماذج من ملفات إنجاز الطلاب','نماذج من المهام الأدائية ومشاريع الطلاب'
-  ]}
+  {title:'أداء الواجبات الوظيفية',weight:'10%',subs:['سجل الدوام الرسمي','سجل المناوبة والإشراف اليومي','سجل الانتظار','خطة توزيع المنهج']},
+  {title:'التفاعل مع المجتمع المهني',weight:'10%',subs:['سجل مجتمعات التعلم المهنية','سجل تبادل الزيارات','تقرير تنفيذ درس تطبيقي','شهادات حضور الدورات والورش التدريبية']},
+  {title:'التفاعل مع أولياء الأمور',weight:'10%',subs:['صور من الجمعية العمومية لأولياء الأمور والمعلمين','تقرير اجتماع ولي الأمر مع المعلم','نسخة من الخطة الأسبوعية للمدرسة']},
+  {title:'التنويع في استراتيجيات التدريس',weight:'10%',subs:['تقرير عن تطبيق استراتيجية','ملف إنجاز المعلم']},
+  {title:'تحسين نتائج المتعلمين',weight:'10%',subs:['نتائج الاختبار القبلي والبعدي','كشف متابعة الطلاب']},
+  {title:'إعداد وتنفيذ خطة التعلم',weight:'10%',subs:['خطة توزيع المنهج','نموذج من إعداد الدروس','نماذج من الواجبات والاختبارات']},
+  {title:'توظيف تقنيات ووسائل التعلم المناسبة',weight:'10%',subs:['صور من الوسائل التعليمية المستخدمة','تقرير عن برنامج تقني تم استخدامه']},
+  {title:'تهيئة البيئة التعليمية',weight:'5%',subs:['تقرير تصنيف الطلاب وفق أنماط التعلم','نماذج من التحفيز المادي والمعنوي']},
+  {title:'الإدارة الصفية',weight:'5%',subs:['كشف المتابعة','تطبيق إدارة الصف']},
+  {title:'تحليل نتائج المتعلمين وتشخيص مستوياتهم',weight:'10%',subs:['تقرير تحليل نتائج الطلاب','سجل معالجة الفاقد التعليمي']},
+  {title:'تنويع أساليب التقويم',weight:'10%',subs:['نماذج من الاختبارات','نماذج من ملفات إنجاز الطلاب','نماذج من المهام الأدائية ومشاريع الطلاب']}
 ];
+const TOTAL_SUBS=BANDS.reduce((s,b)=>s+b.subs.length,0);
+let ME=null,EVS={},REV={},SEL_BAND=null,SEL_SUB=null,SF=null,allT=[],allE=[],allR=[];
 
-const TOTAL_SUBS = BANDS.reduce((s,b)=>s+b.subs.length,0);
+function phoneToEmail(ph){return`${ph.replace(/\D/g,'')}@gmail.com`;}
+function cleanPhone(ph){return ph.replace(/[٠-٩]/g,d=>d.charCodeAt(0)-1632).replace(/\D/g,'').replace(/^0/,'');}
 
-let ME=null, EVS={}, SEL_BAND=null, SEL_SUB=null, SF=null;
-let allT=[], allE=[];
+function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));document.getElementById('page-'+p).classList.add('on');}
 
-// phone → email تحويل رقم الجوال لإيميل وهمي
-function phoneToEmail(ph){ return `${ph.replace(/\D/g,'')}@gmail.com`; }
-function cleanPhone(ph){ return ph.replace(/\D/g,'').replace(/^0/,''); }
-
-function go(p){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
-  document.getElementById('page-'+p).classList.add('on');
+function toggleEye(inputId,btn){
+  const inp=document.getElementById(inputId);
+  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
+  else{inp.type='password';btn.textContent='👁';}
 }
 
 function showTab(t){
@@ -354,23 +361,10 @@ function showTab(t){
   document.querySelectorAll('.tabs button').forEach((b,i)=>b.classList.toggle('on',(t==='li'&&i===0)||(t==='rg'&&i===1)));
   msg('');
 }
-
-function toggleAdminCode(){
-  const role = document.getElementById('rg-r').value;
-  document.getElementById('admin-code-wrap').style.display = role === 'admin' ? '' : 'none';
-  document.getElementById('rg-code').value = '';
-}
-
-function msg(m,ok=false){
-  const e=document.getElementById('amsg');
-  e.textContent=m;
-  e.className='amsg'+(m?(ok?' ok':' err'):'');
-}
-
+function msg(m,ok=false){const e=document.getElementById('amsg');e.textContent=m;e.className='amsg'+(m?(ok?' ok':' err'):'');}
 function ea(e){
-  if(!e)return'';
-  const m=e.message||String(e);
-  if(m.includes('rate limit'))return'⚠️ تجاوزت الحد المسموح، انتظر قليلاً وحاول مجدداً';
+  if(!e)return'';const m=e.message||String(e);
+  if(m.includes('rate limit'))return'⚠️ تجاوزت الحد المسموح، انتظر قليلاً';
   if(m.includes('Invalid login')||m.includes('invalid_credentials'))return'رقم الجوال أو كلمة المرور غير صحيحة';
   if(m.includes('already registered'))return'هذا الرقم مسجل مسبقاً';
   if(m.includes('Password'))return'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
@@ -382,10 +376,8 @@ async function doLogin(){
   const pass=document.getElementById('li-p').value;
   if(!ph||!pass)return msg('يرجى ملء جميع الحقول');
   if(ph.length<9)return msg('رقم الجوال يجب أن يكون 9 أرقام');
-  const btn=document.getElementById('li-t');
-  btn.innerHTML='<span class="spin-sm"></span>';
-  const email=phoneToEmail(ph);
-  const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  const btn=document.getElementById('li-t');btn.innerHTML='<span class="spin-sm"></span>';
+  const{data,error}=await sb.auth.signInWithPassword({email:phoneToEmail(ph),password:pass});
   btn.textContent='دخول';
   if(error)return msg(ea(error));
   await boot(data.user);
@@ -397,17 +389,10 @@ async function doReg(){
   const pass=document.getElementById('rg-p').value;
   const role=document.getElementById('rg-r').value;
   if(!name||!ph||!pass)return msg('يرجى ملء جميع الحقول');
-  if(role==='admin'){
-    const code=document.getElementById('rg-code').value;
-    if(!code)return msg('يرجى إدخال رمز المدير السري');
-    if(code!=='Boss21426')return msg('رمز المدير السري غير صحيح');
-  }
   if(ph.length<9)return msg('رقم الجوال يجب أن يكون 9 أرقام');
   if(pass.length<6)return msg('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
-  const btn=document.getElementById('rg-t');
-  btn.innerHTML='<span class="spin-sm"></span>';
-  const email=phoneToEmail(ph);
-  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name,role,phone:ph}}});
+  const btn=document.getElementById('rg-t');btn.innerHTML='<span class="spin-sm"></span>';
+  const{data,error}=await sb.auth.signUp({email:phoneToEmail(ph),password:pass,options:{data:{full_name:name,role,phone:ph}}});
   btn.textContent='إنشاء حساب';
   if(error)return msg(ea(error));
   if(data.user){
@@ -429,55 +414,58 @@ async function boot(user){
   }
   ME=p;
   document.getElementById('page-loading').classList.remove('on');
-  if(ME.role==='admin'){
-    document.getElementById('a-nm').textContent=ME.full_name;
-    go('admin');loadAdmin();
-  }else{
-    document.getElementById('t-nm').textContent=ME.full_name;
-    document.getElementById('t-gr').textContent=`مرحباً ${ME.full_name} 👋`;
-    go('teacher');loadTeacher();
-  }
+  if(ME.role==='admin'){document.getElementById('a-nm').textContent=ME.full_name;go('admin');loadAdmin();}
+  else{document.getElementById('t-nm').textContent=ME.full_name;document.getElementById('t-gr').textContent=`مرحباً ${ME.full_name} 👋`;go('teacher');loadTeacher();}
 }
 
-// ===== TEACHER =====
 async function loadTeacher(){
-  const{data}=await sb.from('evidences').select('*').eq('teacher_id',ME.id);
-  EVS={};
-  if(data)data.forEach(e=>{ EVS[`${e.band_index}_${e.sub_index}`]=e; });
+  const[{data:evs},{data:revs}]=await Promise.all([
+    sb.from('evidences').select('*').eq('teacher_id',ME.id),
+    sb.from('reviews').select('*').eq('teacher_id',ME.id)
+  ]);
+  EVS={};if(evs)evs.forEach(e=>{EVS[`${e.band_index}_${e.sub_index}`]=e;});
+  REV={};if(revs)revs.forEach(r=>{REV[`${r.band_index}_${r.sub_index}`]=r;});
   renderTeacher();
 }
 
 function renderTeacher(){
   const done=Object.keys(EVS).length;
   document.getElementById('pf').style.width=(done/TOTAL_SUBS*100)+'%';
-  document.getElementById('pl').textContent=`${done} من ${TOTAL_SUBS} شاهد مكتمل`;
-
+  document.getElementById('pl').textContent=`${done} من ${TOTAL_SUBS}`;
   document.getElementById('band-list').innerHTML=BANDS.map((b,bi)=>{
-    const bandDone=b.subs.filter((_,si)=>EVS[`${bi}_${si}`]).length;
-    const isFull=bandDone===b.subs.length;
-    const isPartial=bandDone>0&&!isFull;
-    const cls=isFull?'full':isPartial?'partial':'';
-
+    const bd=b.subs.filter((_,si)=>EVS[`${bi}_${si}`]).length;
+    const isFull=bd===b.subs.length,isPartial=bd>0&&!isFull;
     const subs=b.subs.map((s,si)=>{
       const ev=EVS[`${bi}_${si}`];
-      return`<div class="sub-item ${ev?'done':''}" onclick="openUp(${bi},${si})">
-        <div class="sub-check">${ev?'✓':''}</div>
+      const rv=REV[`${bi}_${si}`];
+      let cls='',icon='',statusIcon='○';
+      if(ev){
+        if(rv){
+          if(rv.status==='accepted'){cls='done';icon='✓';statusIcon='✅';}
+          else if(rv.status==='rejected'){cls='rejected';icon='✕';statusIcon='❌';}
+          else if(rv.status==='needs_edit'){cls='needs-edit';icon='✎';statusIcon='⚠️';}
+          else{cls='done';icon='✓';statusIcon='✅';}
+        }else{cls='done';icon='✓';statusIcon='✅';}
+      }
+      const feedbackHtml=rv&&rv.note?`<div class="sub-feedback ${rv.status==='rejected'?'rejected':'needs-edit'}">${rv.note}</div>`:'';
+      return`<div class="sub-item ${cls}" onclick="openUp(${bi},${si})">
+        <div class="sub-check">${icon}</div>
         <div style="flex:1">
           <div class="sub-name">${s}</div>
           ${ev?`<div class="sub-file">📎 ${ev.file_name}</div>`:''}
+          ${feedbackHtml}
         </div>
-        <span class="sub-status">${ev?'✅':'رفع'}</span>
+        <span class="sub-status">${statusIcon}</span>
       </div>`;
     }).join('');
-
-    return`<div class="band-card ${cls}" id="band-${bi}">
+    return`<div class="band-card ${isFull?'full':isPartial?'partial':''}" id="band-${bi}">
       <div class="band-header" onclick="toggleBand(${bi})">
         <div class="band-num">${isFull?'✓':bi+1}</div>
         <div class="band-info">
           <div class="band-title">${b.title}</div>
-          <div class="band-sub">الوزن النسبي ${b.weight} · ${bandDone}/${b.subs.length} شواهد</div>
+          <div class="band-sub">الوزن النسبي ${b.weight} · ${bd}/${b.subs.length}</div>
         </div>
-        <div class="band-pill">${bandDone}/${b.subs.length}</div>
+        <div class="band-pill">${bd}/${b.subs.length}</div>
         <div class="band-arrow">▼</div>
       </div>
       <div class="sub-list">${subs}</div>
@@ -485,61 +473,82 @@ function renderTeacher(){
   }).join('');
 }
 
-function toggleBand(bi){
-  const card=document.getElementById('band-'+bi);
-  card.classList.toggle('open');
-}
+function toggleBand(bi){document.getElementById('band-'+bi).classList.toggle('open');}
 
 function openUp(bi,si){
   SEL_BAND=bi;SEL_SUB=si;SF=null;
   document.getElementById('mtit').textContent=`بند ${bi+1}: ${BANDS[bi].title}`;
   document.getElementById('msub').textContent=`الشاهد: ${BANDS[bi].subs[si]}`;
   document.getElementById('pv').classList.remove('show');
-  const oldV=document.getElementById('pv-vid');if(oldV)oldV.remove();
-  const oldW=document.getElementById('pv-warn');if(oldW)oldW.remove();
+  const ov=document.getElementById('pv-vid');if(ov)ov.remove();
+  const ow=document.getElementById('pv-warn');if(ow)ow.remove();
   document.getElementById('fi').value='';
+
+  // عرض الملف الحالي إن وجد
+  const fpa=document.getElementById('fpa');
+  const ev=EVS[`${bi}_${si}`];
+  if(ev){
+    const isImg=ev.file_type&&ev.file_type.startsWith('image/');
+    fpa.innerHTML=`<div class="current-file">
+      ${isImg?`<img src="${ev.file_url}" alt=""/>`:'<div style="width:60px;height:60px;background:var(--cream);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.5rem">📄</div>'}
+      <div class="cf-info">
+        <div style="font-size:.78rem;font-weight:700;color:var(--green)">✅ تم الرفع</div>
+        <input class="cf-name-input" id="cf-name" value="${ev.file_name}" placeholder="اسم الملف"/>
+        <div class="cf-actions">
+          <button class="cf-del" onclick="deleteEv(${bi},${si})">🗑 حذف الملف</button>
+          <button style="background:#e8f5e9;color:var(--green);border:none;border-radius:6px;padding:.3rem .7rem;font-family:Cairo,sans-serif;font-size:.75rem;cursor:pointer;font-weight:600" onclick="saveFileName(${bi},${si})">💾 حفظ الاسم</button>
+          ${isImg?`<button style="background:#e3f2fd;color:#1565c0;border:none;border-radius:6px;padding:.3rem .7rem;font-family:Cairo,sans-serif;font-size:.75rem;cursor:pointer;font-weight:600" onclick="showLb('${ev.file_url}','${BANDS[bi].subs[si]}','${ev.file_type||''}')">👁 معاينة</button>`:''} 
+        </div>
+      </div>
+    </div>
+    <p style="font-size:.78rem;color:#aaa;margin-bottom:.5rem;text-align:center">أو ارفع ملفاً جديداً ليحل محله:</p>`;
+  }else{
+    fpa.innerHTML='';
+  }
+
   document.getElementById('mup').classList.add('open');
 }
+
+async function deleteEv(bi,si){
+  if(!confirm('هل تريد حذف هذا الشاهد؟'))return;
+  const ev=EVS[`${bi}_${si}`];
+  if(!ev)return;
+  await sb.from('evidences').delete().eq('id',ev.id);
+  closeUp();toast('تم حذف الشاهد','ok');loadTeacher();
+}
+
+async function saveFileName(bi,si){
+  const newName=document.getElementById('cf-name').value.trim();
+  if(!newName)return;
+  const ev=EVS[`${bi}_${si}`];
+  if(!ev)return;
+  await sb.from('evidences').update({file_name:newName}).eq('id',ev.id);
+  toast('تم حفظ الاسم ✓','ok');loadTeacher();
+}
+
 function closeUp(){document.getElementById('mup').classList.remove('open');}
 
 function onFile(e){
   SF=e.target.files[0];if(!SF)return;
-  const sizeMB=(SF.size/1024/1024).toFixed(1);
-  const img=document.getElementById('pi');
-  const pv=document.getElementById('pv');
-  const oldV=document.getElementById('pv-vid');if(oldV)oldV.remove();
-  const oldW=document.getElementById('pv-warn');if(oldW)oldW.remove();
+  const mb=(SF.size/1024/1024).toFixed(1);
+  const img=document.getElementById('pi'),pv=document.getElementById('pv');
+  const ov=document.getElementById('pv-vid');if(ov)ov.remove();
+  const ow=document.getElementById('pv-warn');if(ow)ow.remove();
   if(SF.type.startsWith('video/')){
-    if(SF.size>20*1024*1024){
-      toast(`⚠️ حجم الفيديو ${sizeMB} MB — الحد الأقصى 20 MB`,'err');
-      SF=null;document.getElementById('fi').value='';return;
-    }
-    if(SF.size>10*1024*1024){
-      const w=document.createElement('div');w.id='pv-warn';
-      w.style.cssText='background:#fff8e1;border:1px solid #f0c040;border-radius:8px;padding:.5rem .8rem;font-size:.78rem;color:#7a5800;margin-bottom:.5rem;text-align:center';
-      w.textContent=`⚠️ حجم الفيديو ${sizeMB} MB — قريب من الحد الأقصى`;
-      pv.insertBefore(w,img);
-    }
+    if(SF.size>20*1024*1024){toast(`⚠️ حجم الفيديو ${mb} MB — الحد الأقصى 20 MB`,'err');SF=null;document.getElementById('fi').value='';return;}
+    if(SF.size>10*1024*1024){const w=document.createElement('div');w.id='pv-warn';w.style.cssText='background:#fff8e1;border:1px solid #f0c040;border-radius:8px;padding:.5rem .8rem;font-size:.78rem;color:#7a5800;margin-bottom:.5rem;text-align:center';w.textContent=`⚠️ حجم الفيديو ${mb} MB — قريب من الحد الأقصى`;pv.insertBefore(w,img);}
     img.style.display='none';
-    const vid=document.createElement('video');vid.id='pv-vid';
-    vid.src=URL.createObjectURL(SF);vid.controls=true;
-    vid.style.cssText='max-width:100%;max-height:180px;border-radius:9px;margin-bottom:.4rem';
-    pv.insertBefore(vid,img);
-  }else if(SF.type.startsWith('image/')){
-    img.src=URL.createObjectURL(SF);img.style.display='';
-  }else{img.style.display='none';}
-  document.getElementById('pfi').textContent=`${SF.name} — ${sizeMB} MB`;
+    const vid=document.createElement('video');vid.id='pv-vid';vid.src=URL.createObjectURL(SF);vid.controls=true;vid.style.cssText='max-width:100%;max-height:180px;border-radius:9px;margin-bottom:.4rem';pv.insertBefore(vid,img);
+  }else if(SF.type.startsWith('image/')){img.src=URL.createObjectURL(SF);img.style.display='';}
+  else{img.style.display='none';}
+  document.getElementById('pfi').textContent=`${SF.name} — ${mb} MB`;
   pv.classList.add('show');
 }
 
-const dzEl=document.getElementById('dz');
-dzEl.addEventListener('dragover',e=>{e.preventDefault();dzEl.classList.add('drag');});
-dzEl.addEventListener('dragleave',()=>dzEl.classList.remove('drag'));
-dzEl.addEventListener('drop',e=>{
-  e.preventDefault();dzEl.classList.remove('drag');
-  const f=e.dataTransfer.files[0];
-  if(f){document.getElementById('fi').files=e.dataTransfer.files;onFile({target:{files:[f]}});}
-});
+const dzel=document.getElementById('dz');
+dzel.addEventListener('dragover',e=>{e.preventDefault();dzel.classList.add('drag');});
+dzel.addEventListener('dragleave',()=>dzel.classList.remove('drag'));
+dzel.addEventListener('drop',e=>{e.preventDefault();dzel.classList.remove('drag');const f=e.dataTransfer.files[0];if(f){document.getElementById('fi').files=e.dataTransfer.files;onFile({target:{files:[f]}});}});
 
 async function doUp(){
   if(!SF)return toast('اختر ملفاً أولاً','err');
@@ -551,76 +560,73 @@ async function doUp(){
     const{error:e1}=await sb.storage.from(BKT).upload(path,SF,{upsert:true});
     if(e1)throw e1;
     const{data:ud}=sb.storage.from(BKT).getPublicUrl(path);
-    const{error:e2}=await sb.from('evidences').upsert({
-      teacher_id:ME.id,band_index:SEL_BAND,sub_index:SEL_SUB,
-      file_name:SF.name,file_url:ud.publicUrl,file_type:SF.type
-    },{onConflict:'teacher_id,band_index,sub_index'});
+    const{error:e2}=await sb.from('evidences').upsert({teacher_id:ME.id,band_index:SEL_BAND,sub_index:SEL_SUB,file_name:SF.name,file_url:ud.publicUrl,file_type:SF.type},{onConflict:'teacher_id,band_index,sub_index'});
     if(e2)throw e2;
     closeUp();toast('تم رفع الشاهد بنجاح ✓','ok');loadTeacher();
   }catch(err){toast('خطأ: '+err.message,'err');}
   btn.innerHTML='رفع الشاهد';btn.disabled=false;
 }
 
-// ===== ADMIN =====
 async function loadAdmin(){
-  const[{data:t},{data:e}]=await Promise.all([
+  const[{data:t},{data:e},{data:r}]=await Promise.all([
     sb.from('profiles').select('*').eq('role','teacher'),
-    sb.from('evidences').select('*')
+    sb.from('evidences').select('*'),
+    sb.from('reviews').select('*')
   ]);
-  allT=t||[];allE=e||[];renderAdmin(allT,allE);
+  allT=t||[];allE=e||[];allR=r||[];renderAdmin(allT,allE,allR);
 }
 
-function renderAdmin(teachers,evidences){
-  const em={};
-  evidences.forEach(e=>{
-    if(!em[e.teacher_id])em[e.teacher_id]={};
-    em[e.teacher_id][`${e.band_index}_${e.sub_index}`]=e;
-  });
+function renderAdmin(teachers,evidences,reviews){
+  const em={};evidences.forEach(e=>{if(!em[e.teacher_id])em[e.teacher_id]={};em[e.teacher_id][`${e.band_index}_${e.sub_index}`]=e;});
+  const rm={};reviews.forEach(r=>{if(!rm[r.teacher_id])rm[r.teacher_id]={};rm[r.teacher_id][`${r.band_index}_${r.sub_index}`]=r;});
   const comp=teachers.filter(t=>Object.keys(em[t.id]||{}).length===TOTAL_SUBS).length;
   document.getElementById('s1').textContent=teachers.length;
   document.getElementById('s2').textContent=comp;
   document.getElementById('s3').textContent=evidences.length;
-
-  if(!teachers.length){
-    document.getElementById('tb').innerHTML='<div style="padding:2rem;text-align:center;color:#bbb">لا يوجد معلمون مسجلون بعد</div>';return;
-  }
-
+  if(!teachers.length){document.getElementById('tb').innerHTML='<div style="padding:2rem;text-align:center;color:#bbb">لا يوجد معلمون مسجلون بعد</div>';return;}
   document.getElementById('tb').innerHTML=teachers.map(t=>{
-    const te=em[t.id]||{};
+    const te=em[t.id]||{};const tr2=rm[t.id]||{};
     const cnt=Object.keys(te).length;
     const pct=Math.round(cnt/TOTAL_SUBS*100);
     const ini=t.full_name.split(' ').map(w=>w[0]).slice(0,2).join('');
-
     const bandsHtml=BANDS.map((b,bi)=>{
-      const bandDone=b.subs.filter((_,si)=>te[`${bi}_${si}`]).length;
-      const allDone=bandDone===b.subs.length;
-      const someDone=bandDone>0&&!allDone;
-      const hdCls=allDone?'has-all':someDone?'has-some':'';
+      const bd=b.subs.filter((_,si)=>te[`${bi}_${si}`]).length;
+      const allD=bd===b.subs.length,someD=bd>0&&!allD;
       const subsHtml=b.subs.map((s,si)=>{
         const ev=te[`${bi}_${si}`];
-        return`<div class="adm-sub-item ${ev?'has':''}" ${ev?`onclick="showLb('${ev.file_url}','${s}','${ev.file_type||''}')"`:''}>
-          <div class="adm-sub-dot"></div>
-          <div class="adm-sub-name">${s}</div>
-          ${ev?`<span class="adm-sub-file">${ev.file_type&&ev.file_type.startsWith('video/')?'🎬':'📄'} ${ev.file_name}</span>`:''}
+        const rv=tr2[`${bi}_${si}`];
+        const statusLabel=rv?(rv.status==='accepted'?'<span style="color:var(--green);font-size:.7rem;font-weight:700">✅ مقبول</span>':rv.status==='rejected'?'<span style="color:var(--red);font-size:.7rem;font-weight:700">❌ مرفوض</span>':'<span style="color:var(--gold);font-size:.7rem;font-weight:700">⚠️ يحتاج تعديل</span>'):'';
+        return`<div class="adm-sub-item ${ev?'has':''}">
+          <div class="adm-sub-top">
+            <div class="adm-sub-dot"></div>
+            <div class="adm-sub-name">${s}</div>
+            ${ev?`<span class="adm-sub-file" onclick="showLb('${ev.file_url}','${s}','${ev.file_type||''}')">📄 ${ev.file_name}</span>`:''}
+            ${statusLabel}
+          </div>
+          ${ev?`<div class="review-area">
+            <div class="review-btns">
+              <button class="rbtn accept ${rv&&rv.status==='accepted'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'accepted',this)">✅ مقبول</button>
+              <button class="rbtn reject ${rv&&rv.status==='rejected'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'rejected',this)">❌ مرفوض</button>
+              <button class="rbtn edit ${rv&&rv.status==='needs_edit'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'needs_edit',this)">⚠️ يحتاج تعديل</button>
+            </div>
+            <textarea class="note-input" id="note-${t.id}-${bi}-${si}" placeholder="ملاحظة للمعلم (اختياري)...">${rv&&rv.note?rv.note:''}</textarea>
+            <button class="save-review-btn" onclick="saveReview('${t.id}',${bi},${si})">💾 حفظ التقييم</button>
+          </div>`:''}
         </div>`;
       }).join('');
       return`<div class="adm-band" id="ab-${t.id}-${bi}">
-        <div class="adm-band-hd ${hdCls}" onclick="toggleAB('ab-${t.id}-${bi}')">
+        <div class="adm-band-hd ${allD?'has-all':someD?'has-some':''}" onclick="toggleAB('ab-${t.id}-${bi}')">
           <div class="adm-band-num">${bi+1}</div>
           <span style="flex:1">${b.title}</span>
-          <span style="font-size:.72rem;color:#999">${bandDone}/${b.subs.length}</span>
+          <span style="font-size:.72rem;color:#aaa">${bd}/${b.subs.length}</span>
         </div>
         <div class="adm-sub-list">${subsHtml}</div>
       </div>`;
     }).join('');
-
     return`<div class="tr" onclick="toggleD('d-${t.id}')">
       <div class="trt">
         <div class="av">${ini}</div>
-        <div class="tm">
-          <div class="tn">${t.full_name}</div>
-          <div class="te">📱 ${t.phone||'—'}</div>
-        </div>
+        <div class="tm"><div class="tn">${t.full_name}</div><div class="te">📱 ${t.phone||'—'}</div></div>
         <div class="pi ${cnt===TOTAL_SUBS?'f':''}">${cnt}/${TOTAL_SUBS}</div>
       </div>
       <div class="mini-bar"><div class="mini-fill" style="width:${pct}%"></div></div>
@@ -629,62 +635,46 @@ function renderAdmin(teachers,evidences){
   }).join('');
 }
 
-function toggleD(id){document.getElementById(id)?.classList.toggle('open');}
-function toggleAB(id){
-  event.stopPropagation();
-  document.getElementById(id)?.classList.toggle('open');
-}
-function filterT(){
-  const q=document.getElementById('srch').value.toLowerCase();
-  renderAdmin(allT.filter(t=>t.full_name.toLowerCase().includes(q)||(t.phone||'').includes(q)),allE);
+let pendingReview={};
+function setReview(tid,bi,si,status,btn){
+  const key=`${tid}-${bi}-${si}`;
+  if(!pendingReview[key])pendingReview[key]={};
+  pendingReview[key].status=status;
+  // تحديث الأزرار
+  const btns=btn.parentElement.querySelectorAll('.rbtn');
+  btns.forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
 }
 
+async function saveReview(tid,bi,si){
+  const key=`${tid}-${bi}-${si}`;
+  const status=pendingReview[key]?.status;
+  const note=document.getElementById(`note-${tid}-${bi}-${si}`).value.trim();
+  if(!status&&!note)return toast('اختر تقييماً أولاً','err');
+  const{error}=await sb.from('reviews').upsert({
+    teacher_id:tid,band_index:bi,sub_index:si,
+    status:status||'accepted',note,admin_id:ME.id
+  },{onConflict:'teacher_id,band_index,sub_index'});
+  if(error)return toast('خطأ: '+error.message,'err');
+  toast('تم حفظ التقييم ✓','ok');
+  loadAdmin();
+}
+
+function toggleD(id){document.getElementById(id)?.classList.toggle('open');}
+function toggleAB(id){event.stopPropagation();document.getElementById(id)?.classList.toggle('open');}
+function filterT(){const q=document.getElementById('srch').value.toLowerCase();renderAdmin(allT.filter(t=>t.full_name.toLowerCase().includes(q)||(t.phone||'').includes(q)),allE,allR);}
 function showLb(url,name,type){
   if(!type||!type.startsWith('image/')){window.open(url,'_blank');return;}
-  document.getElementById('lbi').src=url;
-  document.getElementById('lbc').textContent=name;
-  document.getElementById('lb').classList.add('open');
+  document.getElementById('lbi').src=url;document.getElementById('lbc').textContent=name;document.getElementById('lb').classList.add('open');
 }
 function closeLb(){document.getElementById('lb').classList.remove('open');}
+function toast(m,type=''){const t=document.getElementById('toast');t.textContent=m;t.className='toast show '+type;setTimeout(()=>t.className='toast',3500);}
 
-function toast(m,type=''){
-  const t=document.getElementById('toast');
-  t.textContent=m;t.className='toast show '+type;
-  setTimeout(()=>t.className='toast',3500);
-}
-
-// ===== INIT =====
 (async()=>{
-  const{data:{session}}=await sb.auth.getSession();
-  if(session?.user){
-    await boot(session.user);
-  }else{
-    document.getElementById('page-loading').classList.remove('on');
-    go('auth');
-  }
+  const hide=()=>document.getElementById('page-loading').classList.remove('on');
+  hide();go('auth');
+  try{const{data:{session}}=await sb.auth.getSession();if(session?.user)await boot(session.user);}catch(e){}
 })();
-</script>
-<style>
-.footer{text-align:center;padding:1.5rem;margin-top:1rem}
-.tiktok-btn{display:inline-flex;align-items:center;gap:.4rem;color:#aaa;text-decoration:none;font-family:'Cairo',sans-serif;font-size:.78rem;transition:color .2s}
-.tiktok-btn:hover{color:#333}
-.tiktok-icon{width:14px;height:14px;opacity:.5}
-</style>
-<div class="footer" id="site-footer" style="display:none">
-  <a class="tiktok-btn" href="https://www.tiktok.com/@raa.file" target="_blank">
-    <svg class="tiktok-icon" viewBox="0 0 24 24" fill="white">
-      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
-    </svg>
-    @raa.file
-  </a>
-</div>
-<script>
-// أظهر الفوتر فقط في صفحة المعلم والمدير
-const _origGo = go;
-go = function(p){
-  _origGo(p);
-  document.getElementById('site-footer').style.display = p === 'auth' || p === 'loading' ? 'none' : 'block';
-};
 </script>
 </body>
 </html>
