@@ -184,17 +184,21 @@ body{font-family:"Cairo",sans-serif;background:var(--paper);color:var(--ink);min
 
 /* ADMIN REVIEW */
 .review-area{margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--cream)}
-.review-btns{display:flex;gap:.4rem;margin-bottom:.5rem;flex-wrap:wrap}
-.rbtn{padding:.3rem .7rem;border-radius:6px;border:1.5px solid;font-family:"Cairo",sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}
+.review-btns{display:flex;gap:.5rem;margin-bottom:.7rem;flex-wrap:wrap}
+.rbtn{padding:.45rem 1.1rem;border-radius:8px;border:1.5px solid;font-family:"Cairo",sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.02em}
 .rbtn.accept{border-color:var(--green);color:var(--green);background:transparent}
-.rbtn.accept.active{background:var(--green);color:#fff}
+.rbtn.accept:hover{background:#f0fff6}
+.rbtn.accept.active{background:var(--green);color:#fff;box-shadow:0 2px 8px rgba(30,126,72,.25)}
 .rbtn.reject{border-color:var(--red);color:var(--red);background:transparent}
-.rbtn.reject.active{background:var(--red);color:#fff}
+.rbtn.reject:hover{background:#fff5f5}
+.rbtn.reject.active{background:var(--red);color:#fff;box-shadow:0 2px 8px rgba(192,57,43,.25)}
 .rbtn.edit{border-color:var(--gold);color:var(--gold);background:transparent}
-.rbtn.edit.active{background:var(--gold);color:#fff}
-.note-input{width:100%;border:1.5px solid #e0ddd6;border-radius:7px;padding:.4rem .7rem;font-family:"Cairo",sans-serif;font-size:.78rem;resize:none;height:56px;outline:none}
-.note-input:focus{border-color:var(--teal)}
-.save-review-btn{margin-top:.4rem;padding:.35rem .9rem;background:var(--teal);color:#fff;border:none;border-radius:7px;font-family:"Cairo",sans-serif;font-size:.75rem;font-weight:700;cursor:pointer}
+.rbtn.edit:hover{background:#fffbf0}
+.rbtn.edit.active{background:var(--gold);color:#fff;box-shadow:0 2px 8px rgba(201,147,58,.25)}
+.note-input{width:100%;border:1.5px solid #e8e4dc;border-radius:9px;padding:.6rem .9rem;font-family:"Cairo",sans-serif;font-size:.82rem;resize:none;height:64px;outline:none;background:#fafaf8;transition:border-color .2s}
+.note-input:focus{border-color:var(--teal);background:#fff}
+.save-review-btn{margin-top:.5rem;padding:.5rem 1.2rem;background:var(--ink);color:#fff;border:none;border-radius:8px;font-family:"Cairo",sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;letter-spacing:.03em;transition:all .2s}
+.save-review-btn:hover{background:#2a3540}
 
 /* LIGHTBOX */
 .lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:.8rem}
@@ -603,7 +607,7 @@ function renderAdmin(teachers,evidences,reviews){
       const subsHtml=b.subs.map((s,si)=>{
         const ev=te[`${bi}_${si}`];
         const rv=tr2[`${bi}_${si}`];
-        const statusLabel=rv?(rv.status==='accepted'?'<span style="color:var(--green);font-size:.7rem;font-weight:700">✅ مقبول</span>':rv.status==='rejected'?'<span style="color:var(--red);font-size:.7rem;font-weight:700">❌ مرفوض</span>':'<span style="color:var(--gold);font-size:.7rem;font-weight:700">⚠️ يحتاج تعديل</span>'):'';
+        const statusLabel=rv?(rv.status==='accepted'?'<span style="color:var(--green);font-size:.7rem;font-weight:700">مقبول</span>':rv.status==='rejected'?'<span style="color:var(--red);font-size:.7rem;font-weight:700">مرفوض</span>':'<span style="color:var(--gold);font-size:.7rem;font-weight:700">يحتاج تعديل</span>'):'';
         return`<div class="adm-sub-item ${ev?'has':''}">
           <div class="adm-sub-top">
             <div class="adm-sub-dot"></div>
@@ -613,9 +617,9 @@ function renderAdmin(teachers,evidences,reviews){
           </div>
           ${ev?`<div class="review-area" onclick="event.stopPropagation()">
             <div class="review-btns">
-              <button class="rbtn accept ${rv&&rv.status==='accepted'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'accepted',this)">✅ مقبول</button>
-              <button class="rbtn reject ${rv&&rv.status==='rejected'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'rejected',this)">❌ مرفوض</button>
-              <button class="rbtn edit ${rv&&rv.status==='needs_edit'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'needs_edit',this)">⚠️ يحتاج تعديل</button>
+              <button class="rbtn accept ${rv&&rv.status==='accepted'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'accepted',this)">مقبول</button>
+              <button class="rbtn reject ${rv&&rv.status==='rejected'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'rejected',this)">مرفوض</button>
+              <button class="rbtn edit ${rv&&rv.status==='needs_edit'?'active':''}" onclick="setReview('${t.id}',${bi},${si},'needs_edit',this)">يحتاج تعديل</button>
             </div>
             <textarea class="note-input" onclick="event.stopPropagation()" id="note-${t.id}-${bi}-${si}" placeholder="ملاحظة للمعلم (اختياري)...">${rv&&rv.note?rv.note:''}</textarea>
             <button class="save-review-btn" onclick="saveReview('${t.id}',${bi},${si})">حفظ التقييم</button>
